@@ -1,1 +1,0 @@
-package shipDock.framework.core.interfaces{	/**	 * 观察者接口	 * 	 */	public interface IObserver 	{					function notify(notice:INotice):*;		function setSubject(subject:ISubject):void;		function removeSubject(subject:ISubject):void;	}} 
