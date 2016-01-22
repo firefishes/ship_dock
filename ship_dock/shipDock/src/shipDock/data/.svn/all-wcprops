@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/ship_dock/!svn/ver/353/src/shipDock/data
+END
+QueueLoaderProxy.as
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ship_dock/!svn/ver/353/src/shipDock/data/QueueLoaderProxy.as
+END
+ProfileProxy.as
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/ship_dock/!svn/ver/138/src/shipDock/data/ProfileProxy.as
+END
+IProfileProxy.as
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/ship_dock/!svn/ver/138/src/shipDock/data/IProfileProxy.as
+END

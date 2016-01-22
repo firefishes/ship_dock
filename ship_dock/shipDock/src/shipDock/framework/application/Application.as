@@ -1,0 +1,230 @@
+package shipDock.framework.application {
+	import shipDock.framework.application.component.SDClipped;
+	import shipDock.framework.application.component.SDSprite;
+	import shipDock.framework.application.interfaces.IApplication;
+	import shipDock.framework.application.loader.DataLoader;
+	import shipDock.framework.application.loader.DisplayAssetLoader;
+	import shipDock.framework.application.loader.FileAssetQueueLoader;
+	import shipDock.framework.application.manager.ConfigManager;
+	import shipDock.framework.application.manager.LoaderManager;
+	import shipDock.framework.application.manager.LocaleManager;
+	import shipDock.framework.application.manager.ParticleManager;
+	import shipDock.framework.application.manager.PopupManager;
+	import shipDock.framework.application.manager.ViewManager;
+	import shipDock.framework.application.singletonAgent.ApplicationSingleton;
+	import shipDock.framework.core.action.SDAction;
+	import shipDock.framework.core.interfaces.IAction;
+	import shipDock.framework.core.interfaces.ISingleton;
+	import shipDock.framework.core.manager.ObjectPoolManager;
+	import shipDock.framework.core.manager.SingletonManager;
+	
+	import starling.display.DisplayObjectContainer;
+	import starling.display.Sprite;
+	import starling.events.Event;
+	
+	/**
+	 * 应用主程序的基类单例（代理单例）
+	 *
+	 * ...
+	 * @author shaoxin.ji
+	 */
+	public class Application extends Sprite implements IApplication, ISingleton
+	{
+		
+		public static const APPLICATION:String = "application";
+		
+		/**
+		 * getter 主程序单例
+		 *
+		 */
+		public static function get application():Application
+		{
+			return SingletonManager.singletonManager().getSingleton(APPLICATION) as Application;
+		}
+		
+		protected var _mainActionClass:Class;
+		
+		private var _mainAction:IAction;
+		private var _cursorLayer:SDSprite; //鼠标层
+		private var _UILayer:SDSprite; //UI界面层
+		private var _popupLayer:SDSprite; //弹出层
+		private var _tipLayer:SDSprite; //提示层
+		private var _core:SDCore; //框架核心单例
+		private var _gameContainer:SDClipped; //整体遮罩
+		
+		private var _singletonAgent:ApplicationSingleton;
+		
+		public function Application()
+		{
+			super();
+			this.init();
+			
+			this.addEventListener(Event.ADDED_TO_STAGE, this.addedToStageHandler);
+		}
+		
+		protected function init():void
+		{
+			this._core = SDCore.getInstance();
+			this._core.gameApplication = this;
+			this._core.starlingRootCreated = this.start;
+			
+			this.initSingletons();
+			this.setMainActionClass();
+			
+			this._UILayer = new SDSprite();
+			this._popupLayer = new SDSprite();
+			this._tipLayer = new SDSprite();
+			this._cursorLayer = new SDSprite();
+		}
+		
+		protected function addedToStageHandler(event:Event = null):void
+		{
+			
+			this._gameContainer = new SDClipped(SDConfig.stageWidth, SDConfig.stageHeight);
+			var p:DisplayObjectContainer = this._gameContainer;
+			
+			p.addChild(this._UILayer);
+			p.addChild(this._popupLayer);
+			p.addChild(this._tipLayer);
+			p.addChild(this._cursorLayer);
+			
+			this.addChild(this._gameContainer);
+			
+			SDConfig.setSizeSetting();
+			
+			ViewManager.getInstance().setViewContainer(this._UILayer);
+			PopupManager.getInstance().setPopupContainer(this._popupLayer);
+		}
+		
+		/**
+		 * 初始化单例
+		 *
+		 */
+		protected function initSingletons():void
+		{
+			new LocaleManager();
+			new ConfigManager();
+			new LoaderManager();
+			new PopupManager();
+			new ParticleManager();
+			new ViewManager();
+			
+			this.initObjectPool();
+			
+			this._singletonAgent = new ApplicationSingleton(this, APPLICATION);
+		}
+		
+		/**
+		 * 初始化对象池
+		 *
+		 */
+		protected function initObjectPool():void
+		{
+			var objectPoolManager:ObjectPoolManager = ObjectPoolManager.getInstance();
+			
+			objectPoolManager.addPool(DataLoader, 0, null);
+			objectPoolManager.addPool(DisplayAssetLoader, 0, null);
+			objectPoolManager.addPool(FileAssetQueueLoader, 0, [], null);
+		
+		}
+		
+		/**
+		 * 仅实现接口，不定义功能 
+		 * 
+		 */		
+		public function initSingleton():void
+		{
+			//Do nothing.
+		}
+		
+		public function getInstance():ISingleton
+		{
+			return this._singletonAgent.singleRefrence;
+		}
+		
+		/**
+		 * 覆盖此方法修改顶级逻辑代理类的设置
+		 *
+		 */
+		protected function setMainActionClass():void
+		{
+			this._mainActionClass = SDAction;
+		}
+		
+		/**
+		 * 覆盖此方法，以添加启动应用后的开始逻辑
+		 *
+		 */
+		protected function start():void
+		{
+			if (!!this._mainActionClass)
+			{
+				this._mainAction = new this._mainActionClass();
+				this._mainAction.setProxyed(this);
+			}
+		}
+		
+		/**
+		 * 设置整个应用的触屏交互是否可用
+		 *
+		 * @param	value
+		 * @param	remark
+		 */
+		public function setTouchable(value:Boolean, remark:String):void
+		{
+			this.touchable = value;
+			this._core.debug("【ALL TOUCHABLE CHANGE】Application touchable is changed from " + remark);
+		}
+		
+		/**
+		 * getter UI界面层
+		 *
+		 */
+		public function get UILayer():Sprite
+		{
+			return this._UILayer;
+		}
+		
+		/**
+		 * getter 弹出层
+		 *
+		 */
+		public function get popupLayer():Sprite
+		{
+			return this._popupLayer;
+		}
+		
+		/**
+		 * getter 提示层
+		 *
+		 */
+		public function get tipLayer():Sprite
+		{
+			return this._tipLayer;
+		}
+		
+		/**
+		 * getter 鼠标层
+		 *
+		 */
+		public function get cursorLayer():Sprite
+		{
+			return this._cursorLayer;
+		}
+		
+		public function get singletonName():String
+		{
+			return this._singletonAgent.singletonName;
+		}
+		
+		public function get singleRefrence():*
+		{
+			return this._singletonAgent.singleRefrence;
+		}
+		
+		public function get mainAction():IAction 
+		{
+			return _mainAction;
+		}
+	}
+}

@@ -1,0 +1,25 @@
+package shipDock.framework.application.events
+{
+	import starling.events.Event;
+	
+	/**
+	 * 素材加载队列事件类
+	 *
+	 * ...
+	 * @author shaoxin.ji
+	 */
+	public class AssetQueueEvent extends Event
+	{
+		
+		public static const ASSET_QUEUE_COMPLETE_EVENT:String = "assetQueueCompleteEvent";
+		public static const ASSET_QUEUE_UNIT_LOADED_EVENT:String = "assetQueueUnitLoadedEvent";
+		
+		public function AssetQueueEvent(type:String, bubbles:Boolean = false, data:Object = null)
+		{
+			super(type, bubbles, data);
+		
+		}
+	
+	}
+
+}

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ship_dock/!svn/ver/324/src/shipDock/framework/core/manager
+END
+SingletonManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/ship_dock/!svn/ver/114/src/shipDock/framework/core/manager/SingletonManager.as
+END
+LogsManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ship_dock/!svn/ver/324/src/shipDock/framework/core/manager/LogsManager.as
+END
+ShareObjectManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/ship_dock/!svn/ver/164/src/shipDock/framework/core/manager/ShareObjectManager.as
+END
+SubjectManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/ship_dock/!svn/ver/119/src/shipDock/framework/core/manager/SubjectManager.as
+END
+ObjectPoolManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/ship_dock/!svn/ver/306/src/shipDock/framework/core/manager/ObjectPoolManager.as
+END
+NoticeManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/ship_dock/!svn/ver/119/src/shipDock/framework/core/manager/NoticeManager.as
+END

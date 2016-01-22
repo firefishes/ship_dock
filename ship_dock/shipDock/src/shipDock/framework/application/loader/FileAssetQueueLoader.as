@@ -1,0 +1,194 @@
+package shipDock.framework.application.loader
+{
+	import flash.filesystem.File;
+	import shipDock.framework.core.command.ShareObjectCommand;
+	import shipDock.framework.application.manager.VersionManager;
+	import shipDock.framework.application.SDConfig;
+	import shipDock.framework.application.SDCore;
+	import shipDock.framework.application.manager.SDAssetManager;
+	import shipDock.framework.core.model.SyncModel;
+	import shipDock.framework.core.manager.NoticeManager;
+	import shipDock.framework.core.notice.ShareObjectNotice;
+	
+	/**
+	 * 文件素材队列加载器
+	 *
+	 * ...
+	 * @author shaoxin.ji
+	 */
+	public class FileAssetQueueLoader extends AssetQueueLoader
+	{
+		
+		private var _assetLoadCount:int;
+		private var _isApplyDefaultPath:Boolean;
+		private var _onlyAssets:Array;
+		
+		public function FileAssetQueueLoader(list:Array, assetType:String = null, isApplyDefaultPath:Boolean = true, isScale:Boolean = true, update:Function = null, complete:Function = null)
+		{
+			super(list, assetType, isScale, update, complete);
+			this._isApplyDefaultPath = isApplyDefaultPath;
+		}
+		
+		private function isStorageFile(index:int, isXMLAsset:Boolean):Boolean
+		{
+			var name:String = this._assetList[index];
+			if (isXMLAsset)
+				name = this.getXMLName(name);
+			else
+				name = this.getAssetName(name);
+			var subCommand:String = ShareObjectCommand.GET_FILE_VERSION_CHECKER_SO_COMMAND;
+			var notice:ShareObjectNotice = new ShareObjectNotice(subCommand, SDConfig.SOName, "localFileVersion");
+			var localFileVersion:Object = NoticeManager.sendNotice(notice);
+			var result:Boolean = (!!localFileVersion) ? localFileVersion.hasOwnProperty(name) : false;
+			return result;
+		}
+		
+		override protected function isStorageAsset(index:int):Boolean
+		{
+			return this.isStorageFile(index, false);
+		}
+		
+		override protected function isStorageXMLAsset(index:int):Boolean
+		{
+			return this.isStorageFile(index, true);
+		}
+		
+		override protected function getAssetPathForVersion(index:int):String
+		{
+			var assetName:String = this._assetList[index];
+			var syncModel:SyncModel = VersionManager.getAssetVersion()[assetName];
+			return syncModel.filePath;
+		}
+		
+		override protected function getXMLPathForVersion(index:int):String
+		{
+			var assetName:String = this._assetList[index];
+			var syncModel:SyncModel = VersionManager.getAssetVersion()[assetName + "XML"];
+			return syncModel.filePath;
+		}
+		
+		private function getAssetName(target:String):String
+		{
+			return target + "." + AssetType.TYPE_PNG;
+		}
+		
+		private function getXMLName(target:String):String
+		{
+			return target + "." + AssetType.TYPE_XML;
+		}
+		
+		override protected function loaderUnitComplete(data:*):void
+		{
+			//Do nothing.
+		}
+		
+		override protected function loadAsset():void
+		{
+			var scale:Number = (this._isScale) ? SDConfig.antScale : 1;
+			SDCore.getInstance().assetManager.scaleFactor = scale;
+			
+			var i:int = 0;
+			var max:int = this._assetList.length;
+			var assetManager:SDAssetManager = SDCore.getInstance().assetManager;
+			var file:File;
+			while (i < max)
+			{
+				var name:String = this._assetList[i];
+				var XMLName:String = this.getXMLName(name);
+				var assetName:String = this.getAssetName(name);
+				if (assetManager.assetLoaded.indexOf(name) == -1)
+				{
+					if (this.isStorageAsset(i))
+					{ //增量文件
+						if (this.isStorageXMLAsset(i))
+						{
+							assetManager.assetLoaded.push(name);
+							
+							var syncModel:SyncModel = VersionManager.getAssetVersion()[assetName];
+							var filePath:String = syncModel.filePath;
+							syncModel = VersionManager.getAssetVersion()[XMLName];
+							var xmlPath:String = syncModel.filePath;
+							
+							file = File.applicationStorageDirectory.resolvePath(filePath);
+							assetManager.enqueueWithName(file.url, assetName.split('.')[0]);
+							file = File.applicationStorageDirectory.resolvePath(xmlPath);
+							assetManager.enqueueWithName(file.url, XMLName.split('.')[0]);
+							_assetLoadCount++;
+						}
+					}
+					else
+					{
+						assetManager.assetLoaded.push(assetName);
+						if (this._isApplyDefaultPath)
+						{
+							if ((this._assetType == AssetType.TYPE_PNG) || (this._assetType == AssetType.TYPE_JPG))
+								assetManager.enqueuePNG(this._assetList[i]);
+							else if (this._assetType == AssetType.TYPE_ATF)
+								assetManager.enqueueATF(this._assetList[i]);
+						}
+						else
+							assetManager.enqueue(this._assetList[i]); //普通的方式将文件名加入加载队列
+						_assetLoadCount++;
+					}
+				}
+				i++;
+			}
+			var ii:int = 0;
+			var onlyAssetMax:uint = this.onlyAssets.length;
+			while (ii < onlyAssetMax)
+			{
+				assetManager.enqueuePNG(this._onlyAssets[ii], false); //加载单独的纹理素材（没有纹理配置文件）
+				_assetLoadCount++;
+				ii++;
+			}
+			if (_assetLoadCount > 0)
+				assetManager.loadQueue(this.assetManagerLoadOK);
+			else
+				this.assetQueueComplete();
+		}
+		
+		/**
+		 * 统一设置文件素材队列加载器的参数信息
+		 *
+		 * @param	list
+		 * @param	assetType
+		 * @param	isApplyDefaultPath
+		 * @param	isScale
+		 * @param	update
+		 * @param	complete
+		 */
+		public function setFileAssetQueueInfo(list:Array, assetType:String, isApplyDefaultPath:Boolean = true, isScale:Boolean = true, update:Function = null, complete:Function = null):void
+		{
+			super.setAssetQueueInfo(list, assetType, isScale, update, complete);
+			this._isApplyDefaultPath = isApplyDefaultPath;
+		}
+		
+		override public function resetPoolObject():void
+		{
+			this.setFileAssetQueueInfo([], null);
+			this.resetAssetQueue();
+		}
+		
+		public function get isApplyDefaultPath():Boolean
+		{
+			return _isApplyDefaultPath;
+		}
+		
+		override public function get queueSize():uint
+		{
+			return this._assetLoadCount;
+		}
+		
+		public function get onlyAssets():Array
+		{
+			(_onlyAssets == null) && (_onlyAssets = []);
+			return _onlyAssets;
+		}
+		
+		public function set onlyAssets(value:Array):void
+		{
+			_onlyAssets = value;
+		}
+	}
+
+}

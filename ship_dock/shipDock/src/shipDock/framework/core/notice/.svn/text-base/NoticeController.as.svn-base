@@ -1,0 +1,156 @@
+package shipDock.framework.core.notice
+{
+	import shipDock.framework.core.interfaces.IAction;
+	import shipDock.framework.core.interfaces.INotice;
+	import shipDock.framework.core.interfaces.IObserver;
+	import shipDock.framework.core.manager.SingletonManager;
+	import shipDock.framework.core.methodExecuter.MethodElement;
+	import shipDock.framework.core.observer.Observer;
+	import shipDock.framework.core.singleton.SingletonBase;
+	import shipDock.framework.core.utils.HashMap;
+	
+	final public class NoticeController extends SingletonBase
+	{
+		
+		public static const NOTICE_CONTROLLER:String = "noticeController";
+		
+		private static const KEY_OWNER:String = "owner";
+		private static const KEY_METHOD:String = "method";
+		private static const KEY_ACTION_NAME:String = "actionName";
+		
+		public static function getInstance():NoticeController
+		{
+			return SingletonManager.singletonManager().getSingleton(NOTICE_CONTROLLER) as NoticeController;
+		}
+		
+		private var _notices:HashMap;
+		private var _observers:HashMap;
+		private var _globalObserver:Observer;
+		
+		public function NoticeController()
+		{
+			super(this, NOTICE_CONTROLLER);
+			
+			this._notices = new HashMap();
+			this._observers = new HashMap();
+			this._globalObserver = new Observer();
+		}
+		
+		/**
+		 * 添加消息
+		 *
+		 * @param	noticeName 消息名
+		 * @param	observer 消息的观察者
+		 * @param	handler 消息处理器函数
+		 */
+		public function addNotice(noticeName:String, observer:IObserver, handler:Function):void
+		{
+			(!observer) && (observer = this._globalObserver);
+			var list:Array = this._observers.getList(observer);
+			(list == null) && (list = []);
+			(list.indexOf(noticeName) == -1) && list.push(noticeName);//判断此观察者是否添加过相同消息
+			
+			this._observers.put(observer, list);
+			
+			list = this.getNoticeList(noticeName);
+			(list == null) && (list = []);
+			var item:Object = {};
+			(observer is IAction) && (item[KEY_ACTION_NAME] = (observer as IAction).actionName);
+			item[KEY_OWNER] = observer;
+			item[KEY_METHOD] = new MethodElement(handler, null, observer);
+			list.push(item); //添加新的消息项
+			this._notices.put(noticeName, list);
+		}
+		
+		/**
+		 * 移除消息
+		 *
+		 * @param	noticeName
+		 * @param	observer
+		 * @param	handler
+		 */
+		public function removeNotice(noticeName:String, observer:IObserver, handler:Function):void
+		{
+			var index:int, item:Object;
+			(!observer) && (observer = this._globalObserver);
+			var list:Array = this._observers.getList(observer);
+			if (!!list)
+			{
+				index = list.indexOf(noticeName);
+				(index != -1) && list.splice(index, 1);
+				(list.length == 0) && this._observers.remove(observer);
+			}
+			else
+				return;
+			list = this.getNoticeList(noticeName);
+			if (list == null)
+				return;
+			var element:MethodElement;
+			for each (item in list)
+			{
+				element = item[KEY_METHOD];
+				if ((item[KEY_OWNER] == observer) && (element.method == handler))
+				{
+					index = list.indexOf(item);
+					(index != -1) && list.splice(index, 1);
+					element.dispose();
+					delete item[KEY_OWNER];
+					delete item[KEY_METHOD];
+					break;
+				}
+			}
+		}
+		
+		/**
+		 * 获取消息
+		 *
+		 * @param	noticeName
+		 * @return
+		 */
+		private function getNoticeList(noticeName:String):Array
+		{
+			return this._notices.getList(noticeName);
+		}
+		
+		/**
+		 * 广播消息
+		 *
+		 * 不能取代命令机制，广播消息的操作与命令机制区别在于广播出的消息会使订阅了此消息的观察者一起响应
+		 *
+		 */
+		public function sendNotice(notice:INotice):*
+		{
+			if (notice == null)
+				return null;
+			var notices:Array = this.getNoticeList(notice.name);
+			if (notices == null)
+				return null;
+			var result:*, i:int = 0, max:int = notices.length, item:Object, observer:IObserver, element:MethodElement, actionName:String, args:Array;
+			while (i < max)
+			{
+				item = notices[i];
+				observer = item[KEY_OWNER];
+				element = item[KEY_METHOD];
+				actionName = item[KEY_ACTION_NAME];
+				
+				if (!!element)
+				{
+					if (!!actionName && !!notice.subCommand)
+						args = [notice, actionName]; //用于命令机制的消息
+					else
+						args = [notice]; //普通消息机制
+					if(notice.observer && (notice.observer != observer)) {//判断是否只在特定发送者中触发消息侦听器
+						i++;
+						continue;
+					}
+					notice.isExecuting = true;
+					result = element.apply(null, args); //运行消息处理器函数
+					notice.isExecuting = false;
+					(notice.isAutoDispose) && notice.dispose();
+				}
+				i++;
+			}
+			return result;
+		}
+	}
+}

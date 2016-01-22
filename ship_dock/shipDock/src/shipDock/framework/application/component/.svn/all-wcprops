@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ship_dock/!svn/ver/270/src/shipDock/framework/application/component
+END
+SDQuadButton.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/ship_dock/!svn/ver/250/src/shipDock/framework/application/component/SDQuadButton.as
+END
+SDSprite.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/ship_dock/!svn/ver/124/src/shipDock/framework/application/component/SDSprite.as
+END
+SDMovieClip.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/ship_dock/!svn/ver/250/src/shipDock/framework/application/component/SDMovieClip.as
+END
+SDQuad.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/ship_dock/!svn/ver/129/src/shipDock/framework/application/component/SDQuad.as
+END
+SDNativeText.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/ship_dock/!svn/ver/250/src/shipDock/framework/application/component/SDNativeText.as
+END
+SDQuadBatch.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/ship_dock/!svn/ver/129/src/shipDock/framework/application/component/SDQuadBatch.as
+END
+SDQuadText.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/ship_dock/!svn/ver/250/src/shipDock/framework/application/component/SDQuadText.as
+END
+SDClipped.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/ship_dock/!svn/ver/247/src/shipDock/framework/application/component/SDClipped.as
+END
+SDComponent.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/ship_dock/!svn/ver/270/src/shipDock/framework/application/component/SDComponent.as
+END
+SDImage.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/ship_dock/!svn/ver/241/src/shipDock/framework/application/component/SDImage.as
+END
