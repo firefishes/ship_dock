@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/ship_dock/!svn/ver/44/example/createNewProjectExample/bat
+END
+Packager.bat
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ship_dock/!svn/ver/44/example/createNewProjectExample/bat/Packager.bat
+END
+SetupSDK.bat
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ship_dock/!svn/ver/44/example/createNewProjectExample/bat/SetupSDK.bat
+END
+SetupApplication.bat
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/ship_dock/!svn/ver/44/example/createNewProjectExample/bat/SetupApplication.bat
+END
+CreateCertificate.bat
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/ship_dock/!svn/ver/44/example/createNewProjectExample/bat/CreateCertificate.bat
+END
+InstallAirRuntime.bat
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/ship_dock/!svn/ver/44/example/createNewProjectExample/bat/InstallAirRuntime.bat
+END

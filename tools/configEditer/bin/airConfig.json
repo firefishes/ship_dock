@@ -1,0 +1,14 @@
+{
+	"air_app":{
+		"id":"shipDockConfigParser",
+		"skin_class":"",
+		"skin_swf":"",
+		"so_name":"shipDockConfigParser"
+	},
+	"default_save_path":"shipDockToolExport/[id]/export",
+	"default_browser_path":"shipDockToolExport/[id]/source",
+	"char_set":"iso-8859-01",
+	"scrips":{
+		"rl":"reloadConfigCommand"
+	}
+}

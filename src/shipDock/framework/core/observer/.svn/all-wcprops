@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ship_dock/!svn/ver/138/src/shipDock/framework/core/observer
+END
+Subject.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ship_dock/!svn/ver/354/src/shipDock/framework/core/observer/Subject.as
+END
+SubjectController.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/ship_dock/!svn/ver/122/src/shipDock/framework/core/observer/SubjectController.as
+END
+Observer.as
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ship_dock/!svn/ver/133/src/shipDock/framework/core/observer/Observer.as
+END
+DataProxy.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/ship_dock/!svn/ver/138/src/shipDock/framework/core/observer/DataProxy.as
+END

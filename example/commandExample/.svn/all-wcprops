@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/ship_dock/!svn/ver/278/example/commandExample
+END
+AIR_iOS_readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/ship_dock/!svn/ver/44/example/commandExample/AIR_iOS_readme.txt
+END
+PackageApp.bat
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ship_dock/!svn/ver/44/example/commandExample/PackageApp.bat
+END
+application.xml
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ship_dock/!svn/ver/44/example/commandExample/application.xml
+END
+AIR_Android_readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ship_dock/!svn/ver/44/example/commandExample/AIR_Android_readme.txt
+END
+Run.bat
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/ship_dock/!svn/ver/44/example/commandExample/Run.bat
+END
+commandExample.as3proj
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ship_dock/!svn/ver/48/example/commandExample/commandExample.as3proj
+END

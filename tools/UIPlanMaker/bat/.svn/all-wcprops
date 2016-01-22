@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/ship_dock/!svn/ver/205/tools/UIPlanMaker/bat
+END
+Packager.bat
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/ship_dock/!svn/ver/205/tools/UIPlanMaker/bat/Packager.bat
+END
+SetupSDK.bat
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/ship_dock/!svn/ver/205/tools/UIPlanMaker/bat/SetupSDK.bat
+END
+SetupApplication.bat
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ship_dock/!svn/ver/205/tools/UIPlanMaker/bat/SetupApplication.bat
+END
+CreateCertificate.bat
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ship_dock/!svn/ver/205/tools/UIPlanMaker/bat/CreateCertificate.bat
+END

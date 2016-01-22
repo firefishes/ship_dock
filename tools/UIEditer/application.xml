@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<application xmlns="http://ns.adobe.com/air/application/4.0">
+  <id>shipDockUIParser</id>
+  <versionNumber>3.1</versionNumber>
+  <filename>shipDockUIParser</filename>
+  <name>船工界面编辑器</name>
+  <initialWindow>
+    <title>shipDockUIParser</title>
+    <content>shipDockUIParser.swf</content>
+    <systemChrome>standard</systemChrome>
+    <transparent>false</transparent>
+    <visible>true</visible>
+    <minimizable>true</minimizable>
+    <maximizable>true</maximizable>
+    <resizable>true</resizable>
+  </initialWindow>
+  <icon>
+    <image29x29>icons/icon29.png</image29x29>
+    <image48x48>icons/icon48.png</image48x48>
+    <image57x57>icons/icon57.png</image57x57>
+    <image72x72>icons/icon72.png</image72x72>
+    <image144x144>icons/icon144.png</image144x144>
+    <image512x512>icons/icon512.png</image512x512>
+  </icon>
+  <!-- 
+	More options:
+	http://livedocs.adobe.com/flex/3/html/File_formats_1.html#1043413
+	-->
+</application>

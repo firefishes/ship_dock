@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:1a8ed113c6c5afc5e0149b83937ba990$ -->
+<TextureAtlas imagePath="battleViewPlan.png">
+    <SubTexture name="battleCards" x="107" y="143" width="755" height="83"/>
+    <SubTexture name="battleMaterials" x="153" y="48" width="43" height="83"/>
+    <SubTexture name="battlePoint" x="198" y="86" width="59" height="44"/>
+    <SubTexture name="battleProBar" x="2" y="143" width="103" height="103"/>
+    <SubTexture name="campVS" x="864" y="2" width="119" height="44"/>
+    <SubTexture name="enemyCamp" x="2" y="2" width="149" height="139"/>
+    <SubTexture name="enemyTroopsBar" x="153" y="2" width="382" height="44"/>
+    <SubTexture name="userCamp" x="2" y="2" width="149" height="139"/>
+    <SubTexture name="userTroopsBar" x="153" y="2" width="382" height="44"/>
+    <SubTexture name="weathers" x="864" y="48" width="119" height="36"/>
+</TextureAtlas>

@@ -1,0 +1,35 @@
+package  
+{
+	import action.MainAction;
+	import shipDock.framework.application.Application;
+	import view.EditerView;
+	
+	/**
+	 * ...
+	 * @author ch.ji
+	 */
+	public class TileMapEditerStage extends Application 
+	{
+		
+		public function TileMapEditerStage() 
+		{
+			super();
+			
+		}
+		
+		override protected function setMainActionClass():void 
+		{
+			this._mainActionClass = MainAction;
+		}
+		
+		override protected function start():void 
+		{
+			super.start();
+			
+			var editerView:EditerView = new EditerView();
+			this.addChild(editerView);
+		}
+		
+	}
+
+}

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/ship_dock/!svn/ver/59/tools/UIEditer/bat
+END
+shipDockUIParser.p12
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ship_dock/!svn/ver/59/tools/UIEditer/bat/shipDockUIParser.p12
+END
+Packager.bat
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/ship_dock/!svn/ver/56/tools/UIEditer/bat/Packager.bat
+END
+SetupSDK.bat
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/ship_dock/!svn/ver/59/tools/UIEditer/bat/SetupSDK.bat
+END
+SetupApplication.bat
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ship_dock/!svn/ver/59/tools/UIEditer/bat/SetupApplication.bat
+END
+CreateCertificate.bat
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ship_dock/!svn/ver/56/tools/UIEditer/bat/CreateCertificate.bat
+END

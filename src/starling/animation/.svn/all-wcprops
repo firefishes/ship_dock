@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/ship_dock/!svn/ver/1/src/starling/animation
+END
+Transitions.as
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ship_dock/!svn/ver/1/src/starling/animation/Transitions.as
+END
+Juggler.as
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/ship_dock/!svn/ver/1/src/starling/animation/Juggler.as
+END
+Tween.as
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/ship_dock/!svn/ver/1/src/starling/animation/Tween.as
+END
+DelayedCall.as
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ship_dock/!svn/ver/1/src/starling/animation/DelayedCall.as
+END
+IAnimatable.as
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ship_dock/!svn/ver/1/src/starling/animation/IAnimatable.as
+END

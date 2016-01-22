@@ -1,0 +1,218 @@
+package shipDock.framework.application.effect
+{
+	import flash.utils.clearInterval;
+	import flash.utils.setInterval;
+	
+	import shipDock.framework.application.SDCore;
+	import shipDock.framework.application.component.SDSprite;
+	import shipDock.framework.application.events.EffectEvent;
+	import shipDock.framework.application.interfaces.IEffect;
+	import shipDock.framework.core.queueExecuter.QueueExecuter;
+	import shipDock.framework.core.queueExecuter.QueueExecuterEvent;
+	import shipDock.framework.core.utils.gc.reclaim;
+	
+	import starling.events.EventDispatcher;
+	
+	/**
+	 * 普通特效基类
+	 *
+	 * ...
+	 * @author ch.ji
+	 */
+	public class SDEffect extends SDSprite implements IEffect
+	{
+		
+		private var _delayFinishTime:Number; //延迟结束的时间（单位毫秒）
+		private var _timeoutID:Number; //延迟结束的id
+		private var _lastTime:Number; //上一次跳帧的时间
+		private var _frameRate:int; //特效帧率
+		private var _complete:Function; //特效完成的回调函数
+		
+		protected var _isFinish:Boolean; //是否完成
+		protected var _autoRemove:Boolean; //完成后是否自动移除特效
+		protected var _queue:QueueExecuter; //特效的内部执行队列
+		
+		/**
+		 * 普通特效基类 
+		 * 
+		 */		
+		public function SDEffect()
+		{
+			super();
+			
+			this._autoRemove = true;
+			this._delayFinishTime = 0;
+			
+			this._frameRate = SDCore.getInstance().frameRate;
+			this._queue = new QueueExecuter();
+			this._queue.addEventListener(QueueExecuterEvent.QUEUE_COMPLETE_EVENT, this.effectFinish);
+		
+		}
+		
+		/**
+		 * 销毁特效
+		 *
+		 */
+		override public function dispose():void
+		{
+			super.dispose();
+			this.removeChildren();
+			this.removeFromParent();
+			reclaim(this._queue);
+			this._queue = null;
+			this._complete = null;
+		}
+		
+		/* INTERFACE base.controller.IQueue */
+		public function commit():void
+		{
+			this.effectStart();
+		}
+		
+		public function effectStart():void {
+			
+		}
+		
+		/**
+		 * 特效完成
+		 *
+		 * @param	event
+		 */
+		public function effectFinish(event:QueueExecuterEvent = null):void
+		{
+			if (this._isFinish)
+				return;
+			this._queue.removeEventListener(QueueExecuterEvent.QUEUE_COMPLETE_EVENT, this.effectFinish);
+			if (this.delayFinishTime > 0)
+				this._timeoutID = setInterval(this.finishCallback, this.delayFinishTime);
+			else
+				this.finishCallback();
+			this._isFinish = true;
+		}
+		
+		/**
+		 * 特效完成后的内部处理
+		 *
+		 */
+		protected function finishCallback():void
+		{
+			clearInterval(this._timeoutID);
+			this._timeoutID = -1;
+			(!!this._complete) && this._complete();
+			this.dispatchEvent(new EffectEvent(EffectEvent.EFFECT_FINISH_EVENT));
+			this.queueNext();
+			(this._autoRemove) && this.dispose();
+		}
+		
+		/**
+		 * 特效每帧的渲染处理
+		 *
+		 * @param	time
+		 */
+		public function frameRender(time:Number):void
+		{
+		
+		}
+		
+		public function advanceTime(time:Number):void
+		{
+			this._lastTime += time;
+			if (this._lastTime >= 1 / this._frameRate)
+			{
+				this.frameRender(time);
+				this._lastTime -= 1 / this._frameRate;
+			}
+		}
+		
+		/**
+		 * 执行此对象所在队列的下一个队列元素
+		 *
+		 */
+		public function queueNext():void
+		{
+			this.dispatchEventWith(QueueExecuterEvent.QUEUE_UNIT_NEXT_EVENT);
+		}
+		
+		/**
+		 * getter 延迟结束的时间（单位毫秒）
+		 *
+		 */
+		public function get delayFinishTime():Number
+		{
+			return _delayFinishTime;
+		}
+		
+		/**
+		 * setter 延迟结束的时间（单位毫秒）
+		 *
+		 */
+		public function set delayFinishTime(value:Number):void
+		{
+			_delayFinishTime = value;
+		}
+		
+		/**
+		 * getter 完成后是否自动移除特效
+		 *
+		 */
+		public function get autoRemove():Boolean
+		{
+			return _autoRemove;
+		}
+		
+		/**
+		 * setter 完成后是否自动移除特效
+		 *
+		 */
+		public function set autoRemove(value:Boolean):void
+		{
+			_autoRemove = value;
+		}
+		
+		/**
+		 * getter 特效帧率
+		 *
+		 */
+		public function get frameRate():int
+		{
+			return _frameRate;
+		}
+		
+		/**
+		 * setter 特效帧率
+		 *
+		 */
+		public function set frameRate(value:int):void
+		{
+			_frameRate = value;
+		}
+		
+		/**
+		 * getter 特效完成的回调函数
+		 *
+		 */
+		public function get complete():Function
+		{
+			return _complete;
+		}
+		
+		/**
+		 * setter 特效完成的回调函数
+		 *
+		 */
+		public function set complete(value:Function):void
+		{
+			(this._complete != value) && (_complete = value);
+		}
+		
+		public function get queueSize():uint
+		{
+			return this._queue.queueSize;
+		}
+		
+		public function get eventDispatcher():EventDispatcher {
+			return this as EventDispatcher;
+		}
+	}
+
+}

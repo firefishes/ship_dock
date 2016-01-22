@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/ship_dock/!svn/ver/196/src/shipDock/loader
+END
+Preloader.as
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/ship_dock/!svn/ver/133/src/shipDock/loader/Preloader.as
+END
+PlatformLoader.as
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ship_dock/!svn/ver/196/src/shipDock/loader/PlatformLoader.as
+END
+VersionLoader.as
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ship_dock/!svn/ver/133/src/shipDock/loader/VersionLoader.as
+END

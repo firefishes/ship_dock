@@ -1,0 +1,91 @@
+package shipDock.framework.application.effect
+{
+	import shipDock.framework.application.SDCore;
+	import starling.animation.IAnimatable;
+	
+	/**
+	 * 动画效果类
+	 *
+	 * ...
+	 * @author shaoxin.ji
+	 */
+	public class AnimatableEffect extends SDEffect
+	{
+		
+		private var _time:Number; //动画经历的时间
+		private var _targert:Object; //应用动画的对象
+		private var _propertes:Object; //动画参数
+		private var _tween:IAnimatable; //动画补间对象
+		private var _completeCallback:Function; //动画完成后的回调函数
+		private var _completeCallbackParams:Function; //动画完成后回调函数的参数
+		
+		public function AnimatableEffect(targert:Object, time:Number, propertes:Object = null)
+		{
+			if (!!propertes)
+			{
+				if (propertes.hasOwnProperty("onComplete"))
+				{
+					this._completeCallback = propertes["onComplete"];
+				}
+			}
+			else
+			{
+				propertes = {};
+			}
+			propertes["onComplete"] = this.effectFinish;
+			
+			this._propertes = propertes;
+			this._targert = targert;
+			this._time = time;
+		
+		}
+		
+		/**
+		 * 启动动画
+		 *
+		 */
+		override public function effectStart():void {
+			
+			this.createTween();
+			
+		}
+		
+		/**
+		 * 创建补间对象
+		 *
+		 */
+		protected function createTween():void
+		{
+			this._tween = SDCore.getInstance().juggler.tween(this._targert, this._time, this._propertes);
+		}
+		
+		/**
+		 * 动画完成的回调函数
+		 *
+		 */
+		private function animatableComplete():void
+		{
+			if (!!this._completeCallback)
+			{
+				this._completeCallback();
+			}
+			SDCore.getInstance().juggler.remove(this._tween);
+			
+			this._tween = null;
+			this._targert = null;
+			this._propertes = null;
+		}
+		
+		override protected function finishCallback():void
+		{
+			this.animatableComplete();
+			super.finishCallback();
+		}
+		
+		override public function get queueSize():uint
+		{
+			return 1;
+		}
+	}
+
+}

@@ -1,0 +1,39 @@
+package command 
+{
+	import action.AIRMainAction;
+	
+	import notices.SDANotice;
+	
+	import shipDock.framework.core.action.SDAction;
+	import shipDock.framework.core.command.Command;
+	
+	/**
+	 * ...
+	 * @author shaoxin.ji
+	 */
+	public class AIRCommand extends Command 
+	{
+		
+		public static const GET_AIR_CONFIG_COMMAND:String = "getAIRConfigCommand";
+		public static const RELOAD_CONFIG_COMMAND:String = "reloadConfigCommand";
+		
+		public function AIRCommand() 
+		{
+			super();
+		}
+		
+		public function getAIRConfigCommand(notice:SDANotice):* {
+			var key:String = notice.data;
+			return this.AIRAction.getAIRConfig(key);
+		}
+		
+		public function reloadConfigCommand(notice:SDANotice):void {
+			//this.AIRAction.registered();
+		}
+		
+		private function get AIRAction():AIRMainAction {
+			return this.action as AIRMainAction;
+		}
+	}
+
+}

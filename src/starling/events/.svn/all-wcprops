@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/ship_dock/!svn/ver/1/src/starling/events
+END
+Event.as
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/ship_dock/!svn/ver/1/src/starling/events/Event.as
+END
+KeyboardEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/ship_dock/!svn/ver/1/src/starling/events/KeyboardEvent.as
+END
+Touch.as
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/ship_dock/!svn/ver/1/src/starling/events/Touch.as
+END
+TouchProcessor.as
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ship_dock/!svn/ver/1/src/starling/events/TouchProcessor.as
+END
+ResizeEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/ship_dock/!svn/ver/1/src/starling/events/ResizeEvent.as
+END
+TouchPhase.as
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/ship_dock/!svn/ver/1/src/starling/events/TouchPhase.as
+END
+TouchEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/ship_dock/!svn/ver/1/src/starling/events/TouchEvent.as
+END
+TouchMarker.as
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/ship_dock/!svn/ver/1/src/starling/events/TouchMarker.as
+END
+EventDispatcher.as
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ship_dock/!svn/ver/1/src/starling/events/EventDispatcher.as
+END
+EnterFrameEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ship_dock/!svn/ver/1/src/starling/events/EnterFrameEvent.as
+END

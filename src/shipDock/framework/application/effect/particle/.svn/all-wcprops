@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ship_dock/!svn/ver/133/src/shipDock/framework/application/effect/particle
+END
+ParticlePool.as
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/ship_dock/!svn/ver/133/src/shipDock/framework/application/effect/particle/ParticlePool.as
+END
+Particle.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/ship_dock/!svn/ver/125/src/shipDock/framework/application/effect/particle/Particle.as
+END
+PDParticle.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/ship_dock/!svn/ver/125/src/shipDock/framework/application/effect/particle/PDParticle.as
+END
+ParticleSystem.as
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/ship_dock/!svn/ver/125/src/shipDock/framework/application/effect/particle/ParticleSystem.as
+END
+ColorArgb.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/ship_dock/!svn/ver/125/src/shipDock/framework/application/effect/particle/ColorArgb.as
+END
+PDParticleSystem.as
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/ship_dock/!svn/ver/133/src/shipDock/framework/application/effect/particle/PDParticleSystem.as
+END

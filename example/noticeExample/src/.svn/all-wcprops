@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/ship_dock/!svn/ver/339/example/noticeExample/src
+END
+Main.as
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/ship_dock/!svn/ver/339/example/noticeExample/src/Main.as
+END
+NewGameStage.as
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ship_dock/!svn/ver/339/example/noticeExample/src/NewGameStage.as
+END
+StartView.as
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ship_dock/!svn/ver/339/example/noticeExample/src/StartView.as
+END
+FightView.as
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ship_dock/!svn/ver/339/example/noticeExample/src/FightView.as
+END

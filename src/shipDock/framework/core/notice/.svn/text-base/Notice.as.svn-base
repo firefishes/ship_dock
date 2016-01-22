@@ -1,0 +1,239 @@
+package shipDock.framework.core.notice
+{
+	import shipDock.framework.core.interfaces.INotice;
+	import shipDock.framework.core.interfaces.INoticeSender;
+	import shipDock.framework.core.interfaces.IObserver;
+	
+	/**
+	 * 消息基类
+	 *
+	 * 配合命令类完成逻辑的封装和调用，并传递逻辑执行所需的参数
+	 *
+	 * ...
+	 * @author shaoxin.ji
+	 */
+	public class Notice implements INotice
+	{
+		/*消息参数*/
+		protected var _data:*;
+		/*消息名或命令名*/
+		protected var _name:String;
+		/*子命令名*/
+		protected var _subCommand:String;
+		/*自动函数名*/
+		protected var _autoMethodName:String;
+		/*是否正被执行*/
+		protected var _isExecuting:Boolean;
+		/*是否允许重定义子命令名*/
+		protected var _resetSubCommand:Boolean;
+		/*是否自动销毁*/
+		private var _isAutoDispose:Boolean;
+		/*发送消息的观察者*/
+		private var _observer:IObserver;
+		
+		public function Notice(name:String, data:* = null, observer:IObserver = null, autoDispose:Boolean = true)
+		{
+			this._name = name;
+			this._data = data;
+			this._isAutoDispose = autoDispose;
+			this._resetSubCommand = true;
+			this._observer = observer;
+		}
+		
+		public function dispose():void
+		{
+			this._isExecuting = false;
+			this._isAutoDispose = true;
+			this._data = null;
+			this._observer = null;
+			this._autoMethodName = null;
+		}
+		
+		/**
+		 * 修改消息对象的参数
+		 *
+		 * @param	value
+		 */
+		public function changeData(value:*):void
+		{
+			this._data = value;
+		}
+		
+		/**
+		 * 以缓存形式发送消息，用于节省对象开销
+		 *
+		 * @param	noticeSender
+		 * @param	subCommand
+		 * @param	args
+		 * @param	name
+		 * @return
+		 */
+		public function sendSelf(noticeSender:INoticeSender, subCommand:String = null, args:Array = null, nName:String = null):*
+		{
+			if (noticeSender == null)
+				return;
+			(this._isAutoDispose) && (this._isAutoDispose = false);
+			(!this._name || (nName != null)) && (this._name = nName);
+			(this._resetSubCommand && (subCommand != null)) && (this._subCommand = subCommand);
+			((args != null) && (args.length > 0)) && this.setSelfData(args);
+			var result:* = noticeSender.sendNotice(this);
+			return result;
+		}
+		/**
+		 * 覆盖此方法，定义消息的子命令名是否允许外部重定义 
+		 * 
+		 */		
+		protected function setResetSubCommand():void {
+			this._resetSubCommand = true;
+		}
+		
+		/**
+		 * 作为缓存消息存在时需要覆盖的方法，用于定制消息传递的逻辑参数，保证参数的正确性
+		 *
+		 * @param	args
+		 */
+		protected function setSelfData(args:Array):void
+		{
+			this._data = args[0];
+		}
+		
+		protected function getNoticeParams(k:String):* {
+			return (this.data.hasOwnProperty(k)) ? this.data[k] : this.data;
+		}
+		
+		/**
+		 * 修改消息名（命令名）
+		 *
+		 * @param	value
+		 */
+		public function changeName(value:String):void
+		{
+			this._name = value;
+		}
+		
+		/**
+		 * getter 消息参数
+		 *
+		 */
+		public function get data():*
+		{
+			return (this._data == null) ? {} : this._data;
+		}
+		
+		/**
+		 * setter 消息的额外数据
+		 * 
+		 * @param value
+		 * 
+		 */		
+		public function set extraData(value:*):void
+		{
+			if(!value)
+				return;
+			this.data["SD_Extra"] = value;
+		}
+		
+		/**
+		 * getter 消息的额外数据
+		 *  
+		 * @return 
+		 * 
+		 */		
+		public function get extraData():*
+		{
+			(!this.data["SD_Extra"]) && (this.data["SD_Extra"] = {});
+			return this.data["SD_Extra"];
+		}
+		
+		/**
+		 * 消息名或命令名
+		 *
+		 */
+		public function get name():String
+		{
+			return this._name;
+		}
+		
+		/**
+		 * getter 自动函数名
+		 *
+		 */
+		public function get autoMethodName():String
+		{
+			return _autoMethodName;
+		}
+		
+		/**
+		 * setter 自动函数名
+		 *
+		 */
+		public function set autoMethodName(value:String):void
+		{
+			_autoMethodName = value;
+		}
+		
+		/**
+		 * getter 子命令名
+		 *
+		 */
+		public function get subCommand():String
+		{
+			return _subCommand;
+		}
+		
+		/**
+		 * setter 子命令名
+		 *
+		 */
+		public function set subCommand(value:String):void
+		{
+			_subCommand = value;
+		}
+		
+		/**
+		 * getter 是否正被执行
+		 *
+		 */
+		public function get isExecuting():Boolean
+		{
+			return _isExecuting;
+		}
+		
+		/**
+		 * setter 是否正被执行
+		 *
+		 */
+		public function set isExecuting(value:Boolean):void
+		{
+			_isExecuting = value;
+		}
+		
+		/**
+		 * getter 是否自动销毁
+		 *
+		 */
+		public function get isAutoDispose():Boolean
+		{
+			return _isAutoDispose;
+		}
+		
+		/**
+		 * getter 是否允许外部重定义子命令名
+		 *  
+		 * @return 
+		 * 
+		 */		
+		public function get resetSubCommand():Boolean
+		{
+			return _resetSubCommand;
+		}
+
+		public function get observer():IObserver
+		{
+			return _observer;
+		}
+
+
+	}
+
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:93c528691bfcd444da18b8e64254e874$ -->
+<TextureAtlas imagePath="makerSkin.png">
+    <SubTexture name="levelBtnDown" x="2" y="168" width="57" height="52"/>
+    <SubTexture name="levelBtnUp" x="2" y="168" width="57" height="52"/>
+    <SubTexture name="makerButton" x="2" y="85" width="81" height="81"/>
+    <SubTexture name="makerImage" x="2" y="2" width="81" height="81"/>
+    <SubTexture name="structBtnDown" x="2" y="168" width="57" height="52"/>
+    <SubTexture name="structBtnUp" x="2" y="168" width="57" height="52"/>
+</TextureAtlas>

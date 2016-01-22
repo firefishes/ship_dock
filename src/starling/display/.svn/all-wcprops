@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/ship_dock/!svn/ver/1/src/starling/display
+END
+DisplayObjectContainer.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ship_dock/!svn/ver/1/src/starling/display/DisplayObjectContainer.as
+END
+Image.as
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/ship_dock/!svn/ver/1/src/starling/display/Image.as
+END
+Stage.as
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/ship_dock/!svn/ver/1/src/starling/display/Stage.as
+END
+Sprite.as
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/ship_dock/!svn/ver/1/src/starling/display/Sprite.as
+END
+MovieClip.as
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/ship_dock/!svn/ver/1/src/starling/display/MovieClip.as
+END
+BlendMode.as
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/ship_dock/!svn/ver/1/src/starling/display/BlendMode.as
+END
+Quad.as
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/ship_dock/!svn/ver/1/src/starling/display/Quad.as
+END
+Button.as
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/ship_dock/!svn/ver/1/src/starling/display/Button.as
+END
+DisplayObject.as
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ship_dock/!svn/ver/1/src/starling/display/DisplayObject.as
+END
+QuadBatch.as
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/ship_dock/!svn/ver/1/src/starling/display/QuadBatch.as
+END

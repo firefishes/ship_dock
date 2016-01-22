@@ -1,0 +1,58 @@
+10
+
+dir
+353
+http://svnchina.com/svn/ship_dock/src/starling
+http://svnchina.com/svn/ship_dock
+
+
+
+2015-02-10T09:38:43.126859Z
+1
+firefishes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+9a09ff89-02f3-46e1-a753-2b6a104bae2a
+
+animation
+dir
+
+extensions
+dir
+
+utils
+dir
+
+textures
+dir
+
+events
+dir
+
+text
+dir
+
+display
+dir
+
+core
+dir
+
+filters
+dir
+
+errors
+dir
+

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/ship_dock/!svn/ver/228/tools/UIPlanMaker
+END
+PackageApp.bat
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/ship_dock/!svn/ver/205/tools/UIPlanMaker/PackageApp.bat
+END
+application.xml
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/ship_dock/!svn/ver/216/tools/UIPlanMaker/application.xml
+END
+AIR_readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/ship_dock/!svn/ver/205/tools/UIPlanMaker/AIR_readme.txt
+END
+Run.bat
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/ship_dock/!svn/ver/205/tools/UIPlanMaker/Run.bat
+END
+shipDockUIPlanMaker.as3proj
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/ship_dock/!svn/ver/216/tools/UIPlanMaker/shipDockUIPlanMaker.as3proj
+END

@@ -1,0 +1,62 @@
+{
+    "name": "isKing",
+    "plan": {
+        "0": {
+            "viewConfig": "battleViewPlan",
+            "assets": [
+                "battleViewPlan",
+                "battleViewPlanBg"
+            ],
+            "bg": "battleViewPlanBg"
+        }
+    },
+    "level": {},
+    "struct": {},
+    "decs": {
+        "0": {
+            "battleProBar": {
+                "decs": "battleProBar"
+            },
+            "battleMaterials": {
+                "decs": "battleMaterials",
+				"fontSize": "20"
+            },
+            "battleCards": {
+                "decs": "battleCards"
+            },
+            "userTroopsBar": {
+                "decs": "userTroopsBar"
+            },
+            "enemyTroopsBar": {
+                "decs": "enemyTroopsBar"
+            },
+            "campVS": {
+                "decs": "campVS"
+            },
+            "userCamp": {
+                "decs": "userCamp"
+            },
+            "enemyCamp": {
+                "decs": "enemyCamp"
+            },
+            "bp0": {
+                "decs": "bp"
+            },
+            "bp2": {
+                "decs": "bp"
+            },
+            "bp1": {
+                "decs": "bp"
+            },
+            "bp4": {
+                "decs": "bp"
+            },
+            "bp3": {
+                "decs": "bp"
+            },
+            "weathers": {
+                "decs": "weathers"
+            }
+        }
+    }
+}

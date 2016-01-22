@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ship_dock/!svn/ver/353/src/shipDock/framework/core/interfaces
+END
+IDispose.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ship_dock/!svn/ver/129/src/shipDock/framework/core/interfaces/IDispose.as
+END
+INotify.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/ship_dock/!svn/ver/114/src/shipDock/framework/core/interfaces/INotify.as
+END
+IObjectPoolElement.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/ship_dock/!svn/ver/306/src/shipDock/framework/core/interfaces/IObjectPoolElement.as
+END
+IDataProxy.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/ship_dock/!svn/ver/114/src/shipDock/framework/core/interfaces/IDataProxy.as
+END
+IAction.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/ship_dock/!svn/ver/353/src/shipDock/framework/core/interfaces/IAction.as
+END
+ICommand.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ship_dock/!svn/ver/114/src/shipDock/framework/core/interfaces/ICommand.as
+END
+IHTTPToken.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/ship_dock/!svn/ver/114/src/shipDock/framework/core/interfaces/IHTTPToken.as
+END
+IHTTPNotice.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/ship_dock/!svn/ver/114/src/shipDock/framework/core/interfaces/IHTTPNotice.as
+END
+INotice.as
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/ship_dock/!svn/ver/345/src/shipDock/framework/core/interfaces/INotice.as
+END
+INoticeSender.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/ship_dock/!svn/ver/114/src/shipDock/framework/core/interfaces/INoticeSender.as
+END
+IObserver.as
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/ship_dock/!svn/ver/114/src/shipDock/framework/core/interfaces/IObserver.as
+END
+IQueueExecuter.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/ship_dock/!svn/ver/202/src/shipDock/framework/core/interfaces/IQueueExecuter.as
+END
+IMethodElement.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/ship_dock/!svn/ver/261/src/shipDock/framework/core/interfaces/IMethodElement.as
+END
+ISubject.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/ship_dock/!svn/ver/114/src/shipDock/framework/core/interfaces/ISubject.as
+END
+ISDViewAction.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/ship_dock/!svn/ver/352/src/shipDock/framework/core/interfaces/ISDViewAction.as
+END
+IPoolObject.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/ship_dock/!svn/ver/292/src/shipDock/framework/core/interfaces/IPoolObject.as
+END
+IModel.as
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ship_dock/!svn/ver/114/src/shipDock/framework/core/interfaces/IModel.as
+END
+ISingleton.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/ship_dock/!svn/ver/114/src/shipDock/framework/core/interfaces/ISingleton.as
+END

@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/ship_dock/!svn/ver/1/src/starling/textures
+END
+RenderTexture.as
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ship_dock/!svn/ver/1/src/starling/textures/RenderTexture.as
+END
+Texture.as
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/ship_dock/!svn/ver/1/src/starling/textures/Texture.as
+END
+ConcreteTexture.as
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ship_dock/!svn/ver/1/src/starling/textures/ConcreteTexture.as
+END
+AtfData.as
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/ship_dock/!svn/ver/1/src/starling/textures/AtfData.as
+END
+TextureAtlas.as
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/ship_dock/!svn/ver/1/src/starling/textures/TextureAtlas.as
+END
+TextureSmoothing.as
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ship_dock/!svn/ver/1/src/starling/textures/TextureSmoothing.as
+END
+SubTexture.as
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/ship_dock/!svn/ver/1/src/starling/textures/SubTexture.as
+END
+TextureOptions.as
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ship_dock/!svn/ver/1/src/starling/textures/TextureOptions.as
+END

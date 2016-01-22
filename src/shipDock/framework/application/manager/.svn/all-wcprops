@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ship_dock/!svn/ver/346/src/shipDock/framework/application/manager
+END
+ParticleManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/ship_dock/!svn/ver/129/src/shipDock/framework/application/manager/ParticleManager.as
+END
+PopupManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/ship_dock/!svn/ver/250/src/shipDock/framework/application/manager/PopupManager.as
+END
+ConfigManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/ship_dock/!svn/ver/250/src/shipDock/framework/application/manager/ConfigManager.as
+END
+VersionManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/ship_dock/!svn/ver/250/src/shipDock/framework/application/manager/VersionManager.as
+END
+SDAssetManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/ship_dock/!svn/ver/250/src/shipDock/framework/application/manager/SDAssetManager.as
+END
+ViewManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/ship_dock/!svn/ver/346/src/shipDock/framework/application/manager/ViewManager.as
+END
+ApplicationDomainManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/ship_dock/!svn/ver/133/src/shipDock/framework/application/manager/ApplicationDomainManager.as
+END
+VersionName.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/ship_dock/!svn/ver/122/src/shipDock/framework/application/manager/VersionName.as
+END
+FileManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/ship_dock/!svn/ver/324/src/shipDock/framework/application/manager/FileManager.as
+END
+LocaleManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/ship_dock/!svn/ver/250/src/shipDock/framework/application/manager/LocaleManager.as
+END

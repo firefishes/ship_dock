@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/ship_dock/!svn/ver/1/src/starling/core
+END
+starling_internal.as
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/ship_dock/!svn/ver/1/src/starling/core/starling_internal.as
+END
+Starling.as
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/ship_dock/!svn/ver/1/src/starling/core/Starling.as
+END
+StatsDisplay.as
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/ship_dock/!svn/ver/1/src/starling/core/StatsDisplay.as
+END
+RenderSupport.as
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/ship_dock/!svn/ver/1/src/starling/core/RenderSupport.as
+END

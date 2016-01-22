@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/ship_dock/!svn/ver/267/tools/shipDockTileMapEditer/bat
+END
+Packager.bat
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ship_dock/!svn/ver/267/tools/shipDockTileMapEditer/bat/Packager.bat
+END
+SetupSDK.bat
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ship_dock/!svn/ver/267/tools/shipDockTileMapEditer/bat/SetupSDK.bat
+END
+SetupApplication.bat
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/ship_dock/!svn/ver/267/tools/shipDockTileMapEditer/bat/SetupApplication.bat
+END
+CreateCertificate.bat
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/ship_dock/!svn/ver/267/tools/shipDockTileMapEditer/bat/CreateCertificate.bat
+END

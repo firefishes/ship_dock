@@ -1,0 +1,11 @@
+{
+	"tool_app":{
+		"id":"shipDockUIParser",
+		"skin_class":"",
+		"skin_swf":"",
+		"so_name":"shipDockUIParser"
+	},
+	"default_export_path":"shipDockToolExport/UIParser",
+	"default_load_path":"shipDockToolExport/[id]/",
+	"default_texture_xml_path":"assets/xml"
+}

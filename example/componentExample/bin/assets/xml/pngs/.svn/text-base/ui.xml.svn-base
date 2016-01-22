@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:7ee1f3be9e57351782a7c670e70e0285$ -->
+<TextureAtlas imagePath="ui.png">
+    <SubTexture name="closeDown" x="2" y="57" width="54" height="53"/>
+    <SubTexture name="closeUp" x="2" y="2" width="54" height="53"/>
+</TextureAtlas>
