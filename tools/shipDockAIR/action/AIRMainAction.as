@@ -31,19 +31,30 @@ package action
 	import shipDock.framework.core.notice.ShareObjectNotice;
 	
 	/**
+	 * AIR应用主逻辑代理基类
+	 * 
 	 * ...
 	 * @author shaoxin.ji
 	 */
 	public class AIRMainAction extends SDAction implements IAction
 	{
+		/**应用id*/
 		private var _id:String;
+		/**是否已加载皮肤*/
 		private var _isLoadSkin:Boolean;
+		/**AIR应用的配置*/
 		private var _airAppConfig:Object;
+		/**文件管理器*/
 		private var _fileManager:FileManager;
+		/**方法回调中心*/
 		private var _methodCenter:MethodCenter;
+		/**AIR应用配置加载器*/
 		private var _airConfigLoader:DataLoader;
+		/**本地共享数据消息对象的引用*/
 		private var _shareObjectNotice:ShareObjectNotice;
+		/**文件操作消息对象的引用*/
 		private var _fileOperationNotice:AIRFileOperationNotice;
+		/**文件列表加载消息对象的引用*/
 		private var _fileReferenceLoadNotice:AIRFileReferenceLoadNotice;
 		
 		public function AIRMainAction() 
@@ -62,6 +73,11 @@ package action
 			this.registered(AIRNoticeName.SDA_SCRIPT, ShipDockAIRScriptCommand);
 		}
 		
+		/**
+		 * 创建应用
+		 * 
+		 * @param	result
+		 */
 		private function createApplication(result:* = null):void {
 			if(this._isLoadSkin) {
 				this._methodCenter.useCallback("create");
@@ -70,6 +86,12 @@ package action
 			this._isLoadSkin = false;
 		}
 		
+		/**
+		 * 加载AIR应用配置
+		 * 
+		 * @param	callback
+		 * @param	isInit
+		 */
 		public function loadAIRConfig(callback:Function, isInit:Boolean = true):void {
 			if(isInit) {
 				this._isLoadSkin = true;
@@ -82,6 +104,11 @@ package action
 			this._airConfigLoader.commit();
 		}
 		
+		/**
+		 * AIR应用配置加载完毕
+		 * 
+		 * @param	result
+		 */
 		public function airConfigLoadComplete(result:Object):void
 		{
 			ObjectPoolManager.getInstance().toPool(this._airConfigLoader);
@@ -89,6 +116,11 @@ package action
 			this.updateAppConfig(result);
 		}
 		
+		/**
+		 * 更新应用配置
+		 * 
+		 * @param	result
+		 */
 		private function updateAppConfig(result:Object):void {
 			this._airAppConfig = result;
 			this._id = this.getAIRAppConfig("air_app.id");
@@ -104,18 +136,31 @@ package action
 			}
 		}
 		
+		/**
+		 * 开启本地系统的文件拖拽交互功能
+		 * 
+		 * @param	target
+		 */
 		public function applyNativeDrag(target:* = null):void {
 			(!target) && (target = this.proxyed);
 			target.addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, this.nativeDragEnterHandler);
 			target.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, this.nativeDragDropHandler);
 		}
 		
+		/**
+		 * 本地系统的文件开始拖拽
+		 * 
+		 */
 		private function nativeDragEnterHandler(event:NativeDragEvent):void {
 			if (event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 				NativeDragManager.acceptDragDrop(event.target as InteractiveObject);
 			}
 		}
 		
+		/**
+		 * 本地系统的文件在应用程序上释放
+		 * 
+		 */
 		private function nativeDragDropHandler(event:NativeDragEvent):void {
 			var airData:Object = event.clipboard.formats;//读取剪切板
 			var type:String;
@@ -140,11 +185,21 @@ package action
 			}
 		}
 		
+		/**
+		 * 应用程序重启
+		 * 
+		 */
 		public function restart(isReloadSkin:Boolean, restarted:Function = null):void {
 			this._isLoadSkin = isReloadSkin;
 			this.loadAIRConfig(restarted, false);
 		}
 		
+		/**
+		 * 获取AIR应用程序配置中的值，支持获取嵌套的值
+		 * 
+		 * @param	key "a.b.c.value"
+		 * @return
+		 */
 		public function getAIRAppConfig(key:String):*
 		{
 			if (this._airAppConfig == null)
@@ -164,22 +219,33 @@ package action
 			return result;
 		}
 		
+		/**
+		 * 分析应用程序脚本
+		 * 
+		 * @param	scriptText
+		 */
 		public function parseScript(scriptText:String):void {
 			var notice:SDAScriptNotice = new SDAScriptNotice({"s":scriptText});
 			notice.subCommand = ShipDockAIRScriptCommand.SDA_SCRIPT_NORMAL_COMMAND;
 			this.sendNotice(notice);
 		}
 		
-		public function getAIRConfig(key:String):* {
-			return this.getAIRAppConfig(key);
-		}
-		
+		/**
+		 * 获取本地共享数据的值
+		 * 
+		 */
 		public function getSOData(keyField:String):* {
 			var soName:String = ShareObjectManager.getInstance().SOName;
 			var data:Object = this.shareObjectNotice.sendSelf(this, ShareObjectCommand.GET_SO_COMMAND, [soName]);
 			return data[keyField];
 		}
 		
+		/**
+		 * 设置本地共享数据的值
+		 * 
+		 * @param	keyField
+		 * @param	value
+		 */
 		public function setSOData(keyField:String, value:*):void {
 			if (keyField == null)
 				return;
@@ -187,16 +253,35 @@ package action
 			this.shareObjectNotice.sendSelf(this, ShareObjectCommand.FLUSH_SO_COMMAND, [soName, keyField, value]);
 		}
 		
+		/**
+		 * 浏览本地文件
+		 * 
+		 * @param	keyField
+		 * @param	value
+		 */
 		public function browserFile(fileFilters:Array, browserComplete:Function = null, fileRefList:FileReferenceList = null):FileReferenceList {
 			var args:Array = [fileFilters, browserComplete, fileRefList];
 			return this.fileOperationNotice.sendSelf(this, AIRFileOperationCommand.BROWSER_FILE_COMMAND, args);
 		}
 		
-		public function selectMultFile(fileFilters:Array, browserComplete:Function = null):void {
+		/**
+		 * 选择多个文件
+		 * 
+		 * @param	fileFilters
+		 * @param	browserComplete
+		 */
+		/*public function selectMultFile(fileFilters:Array, browserComplete:Function = null):void {
 			var args:Array = [fileFilters, browserComplete];
 			this.fileOperationNotice.sendSelf(this, AIRFileOperationCommand.SELECT_FILE_COMMAND, args);
-		}
+		}*/
 		
+		/**
+		 * 文件浏览列表加载完毕
+		 * 
+		 * @param	list
+		 * @param	callback
+		 * @param	isApplyData
+		 */
 		public function fileReferenceLoad(list:Array, callback:Function, isApplyData:Boolean = true):void {
 			this.fileReferenceLoadNotice.sendSelf(this, null, [list, callback, isApplyData]);
 		}
