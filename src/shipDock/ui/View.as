@@ -482,15 +482,8 @@ package shipDock.ui
 			emptyUI = this.getEmptySpriteUI(name) as DisplayObjectContainer;
 			if(!emptyUI)
 				return;
-			if(newParent) {
-				if(emptyUI.parent) {
-					newParent.x = emptyUI.x;
-					newParent.y = emptyUI.y;
-					emptyUI.parent.addChild(newParent);
-					newParent.addChild(child);
-				}
-			}else
-				emptyUI.addChild(child);
+			emptyUI.addChild(child);
+			(newParent) && newParent.addChild(emptyUI);
 		}
 		
 		/**
