@@ -463,7 +463,7 @@ package shipDock.ui
 							(!!target) && this.staticTextNames.push(target);
 							i++;
 						}
-						this.changeProperty("mergeStaticTextList", []);
+						this.changeProperty("mergeStaticTextList", []); 
 					}
 				}
 			}
