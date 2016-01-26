@@ -24,7 +24,7 @@ package command
 		
 		public function getAIRConfigCommand(notice:SDANotice):* {
 			var key:String = notice.data;
-			return this.AIRAction.getAIRConfig(key);
+			return this.AIRAction.getAIRAppConfig(key);
 		}
 		
 		public function reloadConfigCommand(notice:SDANotice):void {

@@ -30,6 +30,7 @@ package
 		
 		protected var _soName:String;
 		protected var _skinClass:Class;
+		protected var _actionClass:Class;
 		protected var _skin:DisplayObjectContainer;
 		protected var _action:AIRMainAction;
 		protected var _infoText:TextField;
@@ -55,6 +56,11 @@ package
 		protected function initSkinClass():void
 		{
 			this._skinClass = null;
+		}
+		
+		protected function initActoinClass():void
+		{
+			this._actionClass = AIRMainAction;
 		}
 		
 		protected function initSOName():void
@@ -134,7 +140,8 @@ package
 			this.stage.align = StageAlign.TOP_LEFT;
 			this.stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			this._action = new AIRMainAction();
+			this.initActoinClass();
+			this._action = new _actionClass();
 			this._action.setProxyed(this);
 			
 			this._action.loadAIRConfig(this.createUI);
