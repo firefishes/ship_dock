@@ -1,6 +1,7 @@
 package shipDock.framework.core.methodExecuter 
 {
 	import shipDock.framework.core.interfaces.IDispose;
+	import shipDock.framework.core.utils.gc.reclaim;
 	import shipDock.framework.core.utils.HashMap;
 	
 	/**
@@ -30,7 +31,7 @@ package shipDock.framework.core.methodExecuter
 		}
 		
 		protected function purge():void {
-			this._methodMap.dispose();
+			reclaim(this._methodMap);
 			this._methodMap = null;
 		}
 		
@@ -46,7 +47,7 @@ package shipDock.framework.core.methodExecuter
 		public function addCallback(id:String, method:Function, args:Array = null, owner:* = null, isCover:Boolean = false):void {
 			var element:MethodElement = this.methodMap.getValue(id);
 			if (element != null) {
-				if (isCover) {//如果覆盖函数执行器的所有信息
+				if (isCover) {//如果覆盖函数执行器的所有信息，不覆盖则根据各参数是否为空分别替换
 					element.reset(method, args, owner);
 				}else {
 					(args != null) && (element.args = args);//替换参数
@@ -65,7 +66,7 @@ package shipDock.framework.core.methodExecuter
 		 */
 		public function removeCallback(id:String):void {
 			var element:MethodElement = this.methodMap.remove(id);
-			(element != null) && element.dispose();
+			reclaim(element);
 		}
 		
 		/**
@@ -92,7 +93,7 @@ package shipDock.framework.core.methodExecuter
 		public function useCallback(id:String, args:Array = null, thisArgs:* = null, isRemove:Boolean = false):* {
 			var result:*;
 			var element:MethodElement = this.methodMap.getValue(id);
-			(element != null) &&　(result = element.apply(thisArgs, args));
+			(element) && (result = element.apply(thisArgs, args));
 			(isRemove) && this.removeCallback(id);
 			return result;
 		}

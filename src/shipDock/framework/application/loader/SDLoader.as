@@ -4,6 +4,8 @@ package shipDock.framework.application.loader
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.net.URLRequest;
+	import shipDock.framework.core.methodExecuter.MethodCenter;
+	import shipDock.framework.core.utils.gc.reclaim;
 	
 	import shipDock.framework.application.interfaces.ISDLoader;
 	import shipDock.framework.core.interfaces.IPoolObject;
@@ -27,9 +29,6 @@ package shipDock.framework.application.loader
 		
 		private static var instanceCount:uint = 0;
 		
-		private var _complete:Function;
-		private var _progress:Function;
-		private var _completeParams:Array;
 		private var _loadType:int;
 		private var _url:String;
 		/*是否自动销毁，启用此属性，请勿从对象池中获取此对象*/
@@ -38,6 +37,7 @@ package shipDock.framework.application.loader
 		private var _name:String;
 		private var _instanceIndex:int;
 		private var _loaderStatu:int;
+		private var _methodCenter:MethodCenter;
 		
 		protected var _request:URLRequest;
 		protected var _loadedData:*;
@@ -45,6 +45,7 @@ package shipDock.framework.application.loader
 		public function SDLoader(url:String, complete:Function = null, progress:Function = null)
 		{
 			super();
+			
 			this.loaderStatu = LoaderStatus.LOADER_STATU_READY; //加载器就绪
 			this.setSDLoaderInfo(url, complete, progress);
 			this._instanceIndex = instanceCount;
@@ -54,7 +55,8 @@ package shipDock.framework.application.loader
 		public function setSDLoaderInfo(url:String, complete:Function = null, progress:Function = null):void
 		{
 			this.url = url;
-			this.complete = complete;
+			(!this._methodCenter) && (this._methodCenter = new MethodCenter());
+			this._methodCenter.addCallback("complete", complete);
 			this.progress = progress;
 			this.name = null;
 		}
@@ -66,7 +68,8 @@ package shipDock.framework.application.loader
 			this._loadedData = null;
 		}
 		
-		public function reinitPoolObject(args:Array):void {
+		public function reinitPoolObject(args:Array):void
+		{
 			while (args.length < 3)
 				args.push(null);
 			this.unload();
@@ -75,13 +78,19 @@ package shipDock.framework.application.loader
 		
 		public function dispose():void
 		{
-			this.loaderStatu = LoaderStatus.LOADER_STATU_READY; //加载器就绪
-			if (this.isReleaseInPool)//防止私自销毁时仍然遗留在对象池的已用对象集合中
-				return;
-			this.loaderStatu = LoaderStatus.LOADER_STATU_DISPOSED; //加载器被销毁
-			this._loadedData = null;
-			this._complete = null;
 			this._request = null;
+			this._loadedData = null;
+			if (this.isReleaseInPool)
+			{ //防止私自销毁时仍然遗留在对象池的已用对象集合中
+				this.loaderStatu = LoaderStatus.LOADER_STATU_READY; //加载器就绪
+				reclaim(this._methodCenter, "clear");
+			}
+			else
+			{
+				this.loaderStatu = LoaderStatus.LOADER_STATU_DISPOSED; //加载器被销毁
+				reclaim(this._methodCenter);
+				this._methodCenter = null;
+			}
 		}
 		
 		protected function addEvents(target:IEventDispatcher):void
@@ -109,11 +118,11 @@ package shipDock.framework.application.loader
 		protected function loadCompleted(event:* = null):void
 		{
 			this.loaderStatu = LoaderStatus.LOADER_STATU_COMPLETE; //加载器完成加载
-			if (!!this._complete)
+			if (!!this.complete)
 			{
 				var args:Array = [this.getLoadedData()];
-				(!!this._completeParams) && (args = args.concat(this._completeParams));
-				this._complete.apply(null, args);
+				(!!this.completeParams) && (args = args.concat(this.completeParams));
+				this._methodCenter.useCallback("complete", args);
 			}
 			this.dispatchEventWith(Event.COMPLETE);
 			(this._isAutoQueueNext) && this.queueNext();
@@ -134,13 +143,14 @@ package shipDock.framework.application.loader
 		{
 			this.loaderStatu = LoaderStatus.LOADER_STATU_IOERROR; //加载器发生IO错误
 			LogsManager.getInstance().setLog(event.text);
-			this.dispatchEventWith(event.type, false, {"errorID":event.errorID, "text":event.text} );
+			(this._methodCenter) && this._methodCenter.useCallback("loadError");
+			this.dispatchEventWith(event.type, false, {"errorID": event.errorID, "text": event.text});
 		}
 		
 		protected function loadProgress(event:* = null):void
 		{
 			this.loaderStatu = LoaderStatus.LOADER_STATU_LOADING; //加载器加载中
-			(!!this._progress) && this._progress();
+			(this._methodCenter) && this._methodCenter.useCallback("progress");
 		}
 		
 		protected function setLoadedData(result:*):void
@@ -213,27 +223,27 @@ package shipDock.framework.application.loader
 		
 		public function get complete():Function
 		{
-			return _complete;
+			return (this._methodCenter) ? this._methodCenter.getCallback("complete") : null;
 		}
 		
 		public function set complete(value:Function):void
 		{
-			_complete = value;
+			(this._methodCenter) && this._methodCenter.addCallback("complete", value);
 		}
 		
 		public function get progress():Function
 		{
-			return _progress;
+			return (this._methodCenter) ? this._methodCenter.getCallback("progress") : null;
 		}
 		
 		public function set progress(value:Function):void
 		{
-			_progress = value;
+			(this._methodCenter) && this._methodCenter.addCallback("progress", value);
 		}
 		
 		/**
 		 * getter 是否自动销毁
-		 * 
+		 *
 		 */
 		public function get isAutoDispose():Boolean
 		{
@@ -242,7 +252,7 @@ package shipDock.framework.application.loader
 		
 		/**
 		 * setter 是否自动销毁
-		 * 
+		 *
 		 */
 		public function set isAutoDispose(value:Boolean):void
 		{
@@ -328,18 +338,29 @@ package shipDock.framework.application.loader
 		{
 			return 1;
 		}
-
+		
 		public function get completeParams():Array
 		{
-			return _completeParams;
-		}
-
-		public function set completeParams(value:Array):void
-		{
-			_completeParams = value;
+			return (this._methodCenter) ? this._methodCenter.getMethodArgs("complete") : null; //_completeParams;
 		}
 		
-		public function get eventDispatcher():EventDispatcher {
+		public function set completeParams(value:Array):void
+		{
+			(this._methodCenter) && this._methodCenter.setMehodArgs("complete", value);
+		}
+		
+		public function set loadError(value:Function):void
+		{
+			(this._methodCenter) && this._methodCenter.addCallback("loadError", value);
+		}
+		
+		public function get loadError():Function
+		{
+			return (this._methodCenter) ? this._methodCenter.getCallback("loadError") : null;
+		}
+		
+		public function get eventDispatcher():EventDispatcher
+		{
 			return this;
 		}
 	

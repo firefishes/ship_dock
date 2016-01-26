@@ -9,6 +9,7 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.text.TextField;
 	import flash.ui.Keyboard;
+	import flash.utils.setInterval;
 	
 	import action.AIRMainAction;
 	
@@ -58,7 +59,7 @@ package
 			this._skinClass = null;
 		}
 		
-		protected function initActoinClass():void
+		protected function initActionClass():void
 		{
 			this._actionClass = AIRMainAction;
 		}
@@ -140,7 +141,7 @@ package
 			this.stage.align = StageAlign.TOP_LEFT;
 			this.stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			this.initActoinClass();
+			this.initActionClass();
 			this._action = new _actionClass();
 			this._action.setProxyed(this);
 			
@@ -172,6 +173,15 @@ package
 			this.setLog(this._action.id + " start. Welcome!");
 			
 			this.addChild(this._skin);
+		}
+		
+		public function airConfigLoadError(params:*):void {
+			
+			this.graphics.beginFill(0xFFFFFF * Math.random());
+			this.graphics.drawRect(0, 0, this.stage.stageWidth, this.stage.stageHeight);
+			this.graphics.endFill();
+			
+			setInterval(this.airConfigLoadError, 1500, null);
 		}
 		
 		protected function setLogText():void

@@ -2,6 +2,7 @@ package action
 {
 	import flash.desktop.ClipboardFormats;
 	import flash.desktop.NativeDragManager;
+	import flash.display.DisplayObject;
 	import flash.display.InteractiveObject;
 	import flash.events.NativeDragEvent;
 	import flash.net.FileReferenceList;
@@ -101,6 +102,7 @@ package action
 			}
 			this._airConfigLoader = ObjectPoolManager.getInstance().fromPool(DataLoader, null);
 			this._airConfigLoader.setSDLoaderInfo("airConfig.json", this.airConfigLoadComplete);
+			this._airConfigLoader.loadError = this.airConfigLoadError;
 			this._airConfigLoader.commit();
 		}
 		
@@ -114,6 +116,14 @@ package action
 			ObjectPoolManager.getInstance().toPool(this._airConfigLoader);
 			this._airConfigLoader = null;
 			this.updateAppConfig(result);
+		}
+		
+		/**
+		 * AIR应用配置加载出错
+		 * 
+		 */
+		protected function airConfigLoadError():void {
+			this.sendNotice(new InvokeProxyedNotice("airConfigLoadError"));
 		}
 		
 		/**
