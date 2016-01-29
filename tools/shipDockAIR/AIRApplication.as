@@ -69,30 +69,36 @@ package
 			this._soName = null;
 		}
 		
-		protected function shipDockAIRScriptUp(type:int = 0):void {
-			if(type == 0) {
+		protected function shipDockAIRScriptUp(type:int = 0):void
+		{
+			if (type == 0)
+			{
 				(this.stage) && this.stage.addEventListener(KeyboardEvent.KEY_UP, keyboardHandler);
 			}
 		}
 		
-		private function keyboardHandler(event:KeyboardEvent):void {
+		private function keyboardHandler(event:KeyboardEvent):void
+		{
 			var keyCode:Number = event.keyCode;
-			if(keyCode == Keyboard.ENTER) {
+			if (keyCode == Keyboard.ENTER)
+			{
 				this.parseScript();
 			}
 		}
 		
-		protected function parseScript():void {
+		protected function parseScript():void
+		{
 			(this._action) && this._action.parseScript(this.getScriptContent());
 		}
 		
 		/**
 		 * 覆盖此方法，返回脚本命令值
-		 *  
-		 * @return 
-		 * 
-		 */		
-		protected function getScriptContent():String {
+		 *
+		 * @return
+		 *
+		 */
+		protected function getScriptContent():String
+		{
 			return "";
 		}
 		
@@ -130,7 +136,8 @@ package
 			}
 		}
 		
-		protected function clearLogs():void {
+		protected function clearLogs():void
+		{
 			LogsManager.getInstance().clear();
 		}
 		
@@ -148,8 +155,9 @@ package
 			this._action.loadAIRConfig(this.createUI);
 		}
 		
-		protected function reloadAIRConfigSuccess():void {
-			
+		protected function reloadAIRConfigSuccess():void
+		{
+		
 		}
 		
 		protected function createUI():void
@@ -175,7 +183,8 @@ package
 			this.addChild(this._skin);
 		}
 		
-		public function airConfigLoadError(params:*):void {
+		public function airConfigLoadError(params:*):void
+		{
 			
 			this.graphics.beginFill(0xFFFFFF * Math.random());
 			this.graphics.drawRect(0, 0, this.stage.stageWidth, this.stage.stageHeight);
@@ -186,6 +195,36 @@ package
 		
 		protected function setLogText():void
 		{
+		}
+		
+		protected function nativeDragForFile(result:Object):void
+		{
+		
+		}
+		
+		protected function nativeDragForBMP(result:Object):void
+		{
+		
+		}
+		
+		protected function nativeDragForHTML(result:Object):void
+		{
+		
+		}
+		
+		protected function nativeDragForRTF(result:Object):void
+		{
+		
+		}
+		
+		protected function nativeDragForText(result:Object):void
+		{
+		
+		}
+		
+		protected function nativeDragForURL(result:Object):void
+		{
+		
 		}
 		
 		protected function get airAction():AIRMainAction

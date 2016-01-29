@@ -1,4 +1,4 @@
-package action 
+package action
 {
 	import flash.desktop.ClipboardFormats;
 	import flash.desktop.NativeDragManager;
@@ -33,7 +33,7 @@ package action
 	
 	/**
 	 * AIR应用主逻辑代理基类
-	 * 
+	 *
 	 * ...
 	 * @author shaoxin.ji
 	 */
@@ -58,14 +58,14 @@ package action
 		/**文件列表加载消息对象的引用*/
 		private var _fileReferenceLoadNotice:AIRFileReferenceLoadNotice;
 		
-		public function AIRMainAction() 
+		public function AIRMainAction()
 		{
 			super();
 			this._methodCenter = new MethodCenter();
 			this._fileManager = FileManager.getInstance();
 		}
 		
-		override protected function setCommand():void 
+		override protected function setCommand():void
 		{
 			super.setCommand();
 			
@@ -76,11 +76,13 @@ package action
 		
 		/**
 		 * 创建应用
-		 * 
+		 *
 		 * @param	result
 		 */
-		private function createApplication(result:* = null):void {
-			if(this._isLoadSkin) {
+		private function createApplication(result:* = null):void
+		{
+			if (this._isLoadSkin)
+			{
 				this._methodCenter.useCallback("create");
 			}
 			this._methodCenter.useCallback("reloadConfig", null, null, true);
@@ -89,15 +91,19 @@ package action
 		
 		/**
 		 * 加载AIR应用配置
-		 * 
+		 *
 		 * @param	callback
 		 * @param	isInit
 		 */
-		public function loadAIRConfig(callback:Function, isInit:Boolean = true):void {
-			if(isInit) {
+		public function loadAIRConfig(callback:Function, isInit:Boolean = true):void
+		{
+			if (isInit)
+			{
 				this._isLoadSkin = true;
 				this._methodCenter.addCallback("create", callback);
-			}else {
+			}
+			else
+			{
 				this._methodCenter.addCallback("reloadConfig", callback);
 			}
 			this._airConfigLoader = ObjectPoolManager.getInstance().fromPool(DataLoader, null);
@@ -108,7 +114,7 @@ package action
 		
 		/**
 		 * AIR应用配置加载完毕
-		 * 
+		 *
 		 * @param	result
 		 */
 		public function airConfigLoadComplete(result:Object):void
@@ -120,38 +126,44 @@ package action
 		
 		/**
 		 * AIR应用配置加载出错
-		 * 
+		 *
 		 */
-		protected function airConfigLoadError():void {
+		protected function airConfigLoadError():void
+		{
 			this.sendNotice(new InvokeProxyedNotice("airConfigLoadError"));
 		}
 		
 		/**
 		 * 更新应用配置
-		 * 
+		 *
 		 * @param	result
 		 */
-		private function updateAppConfig(result:Object):void {
+		private function updateAppConfig(result:Object):void
+		{
 			this._airAppConfig = result;
 			this._id = this.getAIRAppConfig("air_app.id");
 			var restart:Function = this._methodCenter.getCallback("reloadConfig");
 			var path:String = this.getAIRAppConfig("air_app.skin_swf");
-			if(path && this._isLoadSkin) {
+			if (path && this._isLoadSkin)
+			{
 				var assetLoader:DisplayAssetLoader = new DisplayAssetLoader(path, this.createApplication);
 				assetLoader.isAutoDispose = true;
 				assetLoader.loaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
 				assetLoader.load();
-			}else {
+			}
+			else
+			{
 				this.createApplication();
 			}
 		}
 		
 		/**
 		 * 开启本地系统的文件拖拽交互功能
-		 * 
+		 *
 		 * @param	target
 		 */
-		public function applyNativeDrag(target:* = null):void {
+		public function applyNativeDrag(target:* = null):void
+		{
 			(!target) && (target = this.proxyed);
 			target.addEventListener(NativeDragEvent.NATIVE_DRAG_ENTER, this.nativeDragEnterHandler);
 			target.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP, this.nativeDragDropHandler);
@@ -159,54 +171,68 @@ package action
 		
 		/**
 		 * 本地系统的文件开始拖拽
-		 * 
+		 *
 		 */
-		private function nativeDragEnterHandler(event:NativeDragEvent):void {
-			if (event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
+		private function nativeDragEnterHandler(event:NativeDragEvent):void
+		{
+			if (event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT))
+			{
 				NativeDragManager.acceptDragDrop(event.target as InteractiveObject);
 			}
 		}
 		
 		/**
 		 * 本地系统的文件在应用程序上释放
-		 * 
+		 *
 		 */
-		private function nativeDragDropHandler(event:NativeDragEvent):void {
-			var airData:Object = event.clipboard.formats;//读取剪切板
-			var type:String;
-			for each(type in airData) {
-				if (type == ClipboardFormats.FILE_LIST_FORMAT) {
-					var airObjects:Array = event.clipboard.getData(type) as Array;//获取剪切板中的数据
-					this.invokeProxyed(new InvokeProxyedNotice("nativeDrag", {"clipboadData":airObjects}));
-					//var inFile:File=airObjects[0]as File;//获取剪切板中的文件
-					
-					
-					/*if (type != "air:url") {
-						var airObjects:Array = event.clipboard.getData(type) as Array;//获取剪切板中的数据
-						var inFile:File=airObjects[0]as File;//获取剪切板中的文件
-						var fileInStream:FileStream=new FileStream();//文件流
-						var contentArray:ByteArray=new ByteArray();
-						fileInStream.open(inFile, FileMode.READ);
-						fileInStream.readBytes(contentArray);//读取字节保存到contentArray
-						picture.source=contentArray;
-						savePictureObject(inFile.name, contentArray);//保存到数据库
-					}*/
+		private function nativeDragDropHandler(event:NativeDragEvent):void
+		{
+			var airData:Object = event.clipboard.formats; //读取剪切板
+			var type:String, typeKey:String;
+			for each (type in airData)
+			{
+				if (type == ClipboardFormats.FILE_LIST_FORMAT)
+				{
+					typeKey = "File";//文件数据
 				}
+				else if (type == ClipboardFormats.BITMAP_FORMAT)
+				{
+					typeKey = "BMP";//图片数据
+				}
+				else if (type == ClipboardFormats.HTML_FORMAT)
+				{
+					typeKey = "HTML";//HTML数据
+				}
+				else if (type == ClipboardFormats.RICH_TEXT_FORMAT)
+				{
+					typeKey = "RTF";//富文本数据
+				}
+				else if (type == ClipboardFormats.TEXT_FORMAT)
+				{
+					typeKey = "Text";//字符串数据
+				}
+				else if (type == ClipboardFormats.URL_FORMAT)
+				{
+					typeKey = "URL";//URL链接数据
+				}
+				var airObjects:Array = event.clipboard.getData(type) as Array; //获取剪切板中的数据
+				this.invokeProxyed(new InvokeProxyedNotice("nativeDragFor" + typeKey, {"clipboadData": airObjects}));
 			}
 		}
 		
 		/**
 		 * 应用程序重启
-		 * 
+		 *
 		 */
-		public function restart(isReloadSkin:Boolean, restarted:Function = null):void {
+		public function restart(isReloadSkin:Boolean, restarted:Function = null):void
+		{
 			this._isLoadSkin = isReloadSkin;
 			this.loadAIRConfig(restarted, false);
 		}
 		
 		/**
 		 * 获取AIR应用程序配置中的值，支持获取嵌套的值
-		 * 
+		 *
 		 * @param	key "a.b.c.value"
 		 * @return
 		 */
@@ -231,20 +257,22 @@ package action
 		
 		/**
 		 * 分析应用程序脚本
-		 * 
+		 *
 		 * @param	scriptText
 		 */
-		public function parseScript(scriptText:String):void {
-			var notice:SDAScriptNotice = new SDAScriptNotice({"s":scriptText});
+		public function parseScript(scriptText:String):void
+		{
+			var notice:SDAScriptNotice = new SDAScriptNotice({"s": scriptText});
 			notice.subCommand = ShipDockAIRScriptCommand.SDA_SCRIPT_NORMAL_COMMAND;
 			this.sendNotice(notice);
 		}
 		
 		/**
 		 * 获取本地共享数据的值
-		 * 
+		 *
 		 */
-		public function getSOData(keyField:String):* {
+		public function getSOData(keyField:String):*
+		{
 			var soName:String = ShareObjectManager.getInstance().SOName;
 			var data:Object = this.shareObjectNotice.sendSelf(this, ShareObjectCommand.GET_SO_COMMAND, [soName]);
 			return data[keyField];
@@ -252,11 +280,12 @@ package action
 		
 		/**
 		 * 设置本地共享数据的值
-		 * 
+		 *
 		 * @param	keyField
 		 * @param	value
 		 */
-		public function setSOData(keyField:String, value:*):void {
+		public function setSOData(keyField:String, value:*):void
+		{
 			if (keyField == null)
 				return;
 			var soName:String = ShareObjectManager.getInstance().SOName;
@@ -265,69 +294,71 @@ package action
 		
 		/**
 		 * 浏览本地文件
-		 * 
+		 *
 		 * @param	keyField
 		 * @param	value
 		 */
-		public function browserFile(fileFilters:Array, browserComplete:Function = null, fileRefList:FileReferenceList = null):FileReferenceList {
+		public function browserFile(fileFilters:Array, browserComplete:Function = null, fileRefList:FileReferenceList = null):FileReferenceList
+		{
 			var args:Array = [fileFilters, browserComplete, fileRefList];
 			return this.fileOperationNotice.sendSelf(this, AIRFileOperationCommand.BROWSER_FILE_COMMAND, args);
 		}
 		
 		/**
 		 * 选择多个文件
-		 * 
+		 *
 		 * @param	fileFilters
 		 * @param	browserComplete
-		 */
-		/*public function selectMultFile(fileFilters:Array, browserComplete:Function = null):void {
-			var args:Array = [fileFilters, browserComplete];
-			this.fileOperationNotice.sendSelf(this, AIRFileOperationCommand.SELECT_FILE_COMMAND, args);
-		}*/
+		 */ /*public function selectMultFile(fileFilters:Array, browserComplete:Function = null):void {
+		   var args:Array = [fileFilters, browserComplete];
+		   this.fileOperationNotice.sendSelf(this, AIRFileOperationCommand.SELECT_FILE_COMMAND, args);
+		 }*/
 		
 		/**
 		 * 文件浏览列表加载完毕
-		 * 
+		 *
 		 * @param	list
 		 * @param	callback
 		 * @param	isApplyData
 		 */
-		public function fileReferenceLoad(list:Array, callback:Function, isApplyData:Boolean = true):void {
+		public function fileReferenceLoad(list:Array, callback:Function, isApplyData:Boolean = true):void
+		{
 			this.fileReferenceLoadNotice.sendSelf(this, null, [list, callback, isApplyData]);
 		}
 		
-		public function openWithDefaultApplication(notice:*):void {
-			
+		public function openWithDefaultApplication(notice:*):void
+		{
+		
 		}
 		
-		public function get shareObjectNotice():ShareObjectNotice 
+		public function get shareObjectNotice():ShareObjectNotice
 		{
 			(!this._shareObjectNotice) && (this._shareObjectNotice = new ShareObjectNotice(null, null, null));
 			return _shareObjectNotice;
 		}
 		
-		public function get fileOperationNotice():AIRFileOperationNotice 
+		public function get fileOperationNotice():AIRFileOperationNotice
 		{
 			(this._fileOperationNotice == null) && (this._fileOperationNotice = new AIRFileOperationNotice(null));
 			return _fileOperationNotice;
 		}
 		
-		public function get fileReferenceLoadNotice():AIRFileReferenceLoadNotice 
+		public function get fileReferenceLoadNotice():AIRFileReferenceLoadNotice
 		{
 			(this._fileReferenceLoadNotice == null) && (this._fileReferenceLoadNotice = new AIRFileReferenceLoadNotice(null, null));
 			return _fileReferenceLoadNotice;
 		}
 		
-		public function get fileManager():FileManager 
+		public function get fileManager():FileManager
 		{
 			return _fileManager;
 		}
-
+		
 		public function get id():String
 		{
 			return _id;
 		}
-
+	
 	}
 
 }
