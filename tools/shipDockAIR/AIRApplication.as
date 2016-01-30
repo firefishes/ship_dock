@@ -1,5 +1,6 @@
 package
 {
+	import action.NativeDragParams;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -197,32 +198,32 @@ package
 		{
 		}
 		
-		protected function nativeDragForFile(result:Object):void
+		public function nativeDragForFile(result:NativeDragParams):void
 		{
 		
 		}
 		
-		protected function nativeDragForBMP(result:Object):void
+		public function nativeDragForBMP(result:NativeDragParams):void
 		{
 		
 		}
 		
-		protected function nativeDragForHTML(result:Object):void
+		public function nativeDragForHTML(result:NativeDragParams):void
 		{
 		
 		}
 		
-		protected function nativeDragForRTF(result:Object):void
+		public function nativeDragForRTF(result:NativeDragParams):void
 		{
 		
 		}
 		
-		protected function nativeDragForText(result:Object):void
+		public function nativeDragForText(result:NativeDragParams):void
 		{
 		
 		}
 		
-		protected function nativeDragForURL(result:Object):void
+		public function nativeDragForURL(result:NativeDragParams):void
 		{
 		
 		}

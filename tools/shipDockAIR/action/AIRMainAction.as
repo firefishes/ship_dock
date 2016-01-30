@@ -58,9 +58,9 @@ package action
 		/**文件列表加载消息对象的引用*/
 		private var _fileReferenceLoadNotice:AIRFileReferenceLoadNotice;
 		
-		public function AIRMainAction()
+		public function AIRMainAction(startUpClass:Class = null)
 		{
-			super();
+			super(startUpClass);
 			this._methodCenter = new MethodCenter();
 			this._fileManager = FileManager.getInstance();
 		}
@@ -72,6 +72,7 @@ package action
 			this.registered(AIRNoticeName.SHIP_DOCK_AIR, AIRCommand);
 			this.registered(AIRNoticeName.AIR_FILE_OPERATION, AIRFileOperationCommand);
 			this.registered(AIRNoticeName.SDA_SCRIPT, ShipDockAIRScriptCommand);
+			
 		}
 		
 		/**
@@ -175,10 +176,10 @@ package action
 		 */
 		private function nativeDragEnterHandler(event:NativeDragEvent):void
 		{
-			if (event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT))
-			{
+			/*if (event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT))
+			{*/
 				NativeDragManager.acceptDragDrop(event.target as InteractiveObject);
-			}
+			/*}*/
 		}
 		
 		/**
@@ -216,7 +217,7 @@ package action
 					typeKey = "URL";//URL链接数据
 				}
 				var airObjects:Array = event.clipboard.getData(type) as Array; //获取剪切板中的数据
-				this.invokeProxyed(new InvokeProxyedNotice("nativeDragFor" + typeKey, {"clipboadData": airObjects}));
+				this.invokeProxyed(new InvokeProxyedNotice("nativeDragFor" + typeKey, new NativeDragParams(airObjects)));
 			}
 		}
 		

@@ -20,18 +20,25 @@ package shipDock.framework.core.action {
 		
 		public static const SHIP_DOCK_ACTION:String = "stageAction";
 		
-		public function SDAction() 
+		private var _startUpCommandCls:Class;
+		
+		public function SDAction(startUpClass:Class = null) 
 		{
 			super();
 			defaultAction = this;
+			this._startUpCommandCls = startUpClass;
+			(this._startUpCommandCls) && this.registered(SDNoticeName.SD_START_UP, this._startUpCommandCls);
+			this.startUp();
 		}
 		
 		override protected function setCommand():void 
 		{
+			super.setCommand();
 			this.registered(SDNoticeName.SD_UI, this.UICommandClass);
 			this.registered(SDNoticeName.SD_CORE, this.coreCommandClass);
 			this.registered(SDNoticeName.SD_HTTP, this.HTTPCommandClass);
 			this.registered(SDNoticeName.SD_SHARE_OBJECT, this.shareObjectCommandClass);
+			
 		}
 		
 		protected function startUp():void {
