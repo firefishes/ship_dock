@@ -57,8 +57,6 @@ package shipDock.framework.core.command
 		{
 			var key:String = action.actionName;
 			
-			this._actionController.addAction(key, action);
-			
 			var commandPool:Object = this._commands.getValue(key);
 			(commandPool == null) && (commandPool = {});
 			

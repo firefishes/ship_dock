@@ -55,7 +55,10 @@ package shipDock.framework.core.action {
 		public function addAction(key:String, action:IAction):void
 		{
 			var flag:Boolean = this.hasAction(key);
-			(!flag) && this._actions.put(key, action);
+			if (flag)
+				action.dispose();
+			else
+				this._actions.put(key, action);
 		}
 		
 		/**

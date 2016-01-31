@@ -89,13 +89,13 @@ package shipDock.framework.core.command
 				if (cls)
 				{
 					ac = new cls() as IAction;
-					if (ac)
+					/*if (ac)
 					{
 						if (controller.hasAction(ac.actionName))
 							ac.dispose();
 						else
 							controller.addAction(ac.actionName, ac);
-					}
+					}*/
 				}
 				i++;
 			}

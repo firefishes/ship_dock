@@ -47,24 +47,24 @@ package shipDock.framework.core.action
 			(defaultActionTarget == null) && (defaultActionTarget = value);
 		}
 		
-		/*被代理对象*/
+		/**被代理对象*/
 		protected var _proxyed:*;
-		/*主题对象映射*/
+		/**主题对象映射*/
 		protected var _subjects:Object;
-		/*消息控制器*/
+		/**消息控制器*/
 		protected var _noticeController:NoticeController;
-		/*命令控制器*/
+		/**命令控制器*/
 		protected var _commandController:CommandController;
-		/*逻辑代理控制器*/
-		protected var _actionCotroller:ActionController;
-		/*是否被初始化*/
+		/**逻辑代理控制器*/
+		protected var _actionController:ActionController;
+		/**是否被初始化*/
 		protected var _isInit:Boolean;
 		
-		/*逻辑代理名*/
+		/**逻辑代理名*/
 		private var _actionName:String;
-		/*消息侦听集合*/
+		/**消息侦听集合*/
 		private var _commandListeners:Object;
-		/*触发被代理对象逻辑调用的消息缓存*/
+		/**触发被代理对象逻辑调用的消息缓存*/
 		private var _invokeProxyedNotice:InvokeProxyedNotice;
 		
 		public function Action(name:String = null)
@@ -72,10 +72,11 @@ package shipDock.framework.core.action
 			this._actionName = name;
 			this._subjects = {};
 			this._commandListeners = {};
-			this._actionCotroller = ActionController.getInstance();
+			this._actionController = ActionController.getInstance();
 			this._commandController = CommandController.getInstance();
 			this._noticeController = NoticeController.getInstance();
 			
+			this._actionController.addAction(this.actionName, this);
 		}
 		
 		/**
@@ -120,7 +121,7 @@ package shipDock.framework.core.action
 				name = list[i];
 				if (!!name)
 				{
-					cls = this._actionCotroller.getPreregisteredCommand(name);
+					cls = this._actionController.getPreregisteredCommand(name);
 					if (!!cls) //感兴趣的命令，用于处理一族消息集合
 						this.registered(name, cls);
 					else //感兴趣的消息，用于处理广播消息
@@ -146,7 +147,7 @@ package shipDock.framework.core.action
 				name = list[i];
 				if (!!name)
 				{
-					cls = this._actionCotroller.getPreregisteredCommand(name);
+					cls = this._actionController.getPreregisteredCommand(name);
 					if (!!cls) //移除命令
 						this._commandController.removeCommand(this, name);
 					else //移除消息
@@ -408,7 +409,7 @@ package shipDock.framework.core.action
 		public function getAction(actionName:String):IAction
 		{
 			var result:IAction;
-			(!!this._actionCotroller) && (result = this._actionCotroller.getAction(actionName));
+			(!!this._actionController) && (result = this._actionController.getAction(actionName));
 			(result == null) && (result = Action.defaultAction);
 			return result;
 		}

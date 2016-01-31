@@ -18,9 +18,9 @@ package shipDock.framework.core.command
 		
 		override public function execute(notice:INotice):* 
 		{
+			this.initActions();
 			this.initCommands();
 			this.initProxies();
-			this.initActions();
 		}
 		
 		private function initCommands():void {
@@ -32,7 +32,7 @@ package shipDock.framework.core.command
 			while (i < max) {
 				item = list[i];
 				actionController.preregisteredCommand(item[0], item[1]);
-				i += 2;
+				i++;
 			}
 		}
 		

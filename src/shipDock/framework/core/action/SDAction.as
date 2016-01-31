@@ -27,17 +27,18 @@ package shipDock.framework.core.action {
 			super();
 			defaultAction = this;
 			this._startUpCommandCls = startUpClass;
-			(this._startUpCommandCls) && this.registered(SDNoticeName.SD_START_UP, this._startUpCommandCls);
-			this.startUp();
 		}
 		
 		override protected function setCommand():void 
 		{
-			super.setCommand();
 			this.registered(SDNoticeName.SD_UI, this.UICommandClass);
 			this.registered(SDNoticeName.SD_CORE, this.coreCommandClass);
 			this.registered(SDNoticeName.SD_HTTP, this.HTTPCommandClass);
 			this.registered(SDNoticeName.SD_SHARE_OBJECT, this.shareObjectCommandClass);
+			
+			(this._startUpCommandCls) && this.registered(SDNoticeName.SD_START_UP, this._startUpCommandCls);
+			this.startUp();
+			super.setCommand();
 			
 		}
 		
