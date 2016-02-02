@@ -125,7 +125,7 @@ package shipDock.framework.application.tileMap
 				this._isRedraw = true;
 		}
 		
-		public function invalidateHandler(event:starling.events.Event=null):void
+		public function invalidateHandler(event:*=null):void
 		{
 			this.removeEventListener(Event.ENTER_FRAME, this.invalidateHandler);
 			this.redraw();

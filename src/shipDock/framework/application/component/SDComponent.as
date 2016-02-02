@@ -475,7 +475,7 @@ package shipDock.framework.application.component
 		 * 将重绘控件操作推迟到下一帧执行
 		 *
 		 */
-		public function invalidateHandler(event:Event = null):void
+		public function invalidateHandler(event:* = null):void
 		{
 			this.removeEventListener(Event.ENTER_FRAME, this.invalidateHandler);
 			this.redraw();

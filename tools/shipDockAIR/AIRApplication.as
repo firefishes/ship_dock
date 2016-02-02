@@ -11,6 +11,7 @@ package
 	import flash.text.TextField;
 	import flash.ui.Keyboard;
 	import flash.utils.setInterval;
+	import shipDock.framework.application.component.UIAgent;
 	
 	import action.AIRMainAction;
 	
@@ -36,6 +37,7 @@ package
 		protected var _skin:DisplayObjectContainer;
 		protected var _action:AIRMainAction;
 		protected var _infoText:TextField;
+		protected var _agent:UIAgent;
 		
 		private var _logsCount:int = 0;
 		
@@ -182,6 +184,10 @@ package
 			this.setLog(this._action.id + " start. Welcome!");
 			
 			this.addChild(this._skin);
+			
+			this._agent = new UIAgent(this);
+			this._agent.data = { };
+			this._agent.redraw();
 		}
 		
 		public function airConfigLoadError(params:*):void
