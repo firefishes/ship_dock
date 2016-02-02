@@ -5,8 +5,6 @@ package shipDock.framework.core.action
 	import shipDock.framework.core.interfaces.ISDViewAction;
 	import shipDock.ui.IView;
 	
-	import starling.display.DisplayObject;
-	
 	/**
 	 * 界面的逻辑代理类
 	 *
@@ -97,7 +95,7 @@ package shipDock.framework.core.action
 		
 		protected function resetView():void
 		{
-			DisplayUtils.removeFromDisplay(this._view as DisplayObject, true);
+			DisplayUtils.removeFromDisplay(this._view, true);
 			this._view = null;
 			this._proxyed = null;
 		}

@@ -7,7 +7,13 @@ package shipDock.framework.application.component
 	import shipDock.framework.application.interfaces.IComponent;
 	import shipDock.framework.core.interfaces.IAction;
 	import shipDock.framework.core.interfaces.IDispose;
+	import shipDock.framework.core.interfaces.INotice;
+	import shipDock.framework.core.interfaces.IObserver;
+	import shipDock.framework.core.interfaces.ISubject;
+	import shipDock.framework.core.manager.SubjectManager;
 	import shipDock.framework.core.methodExecuter.MethodCenter;
+	import shipDock.framework.core.observer.UIAgentSubject;
+	import shipDock.framework.core.utils.gc.reclaim;
 	import shipDock.framework.core.utils.gc.reclaimArray;
 	
 	/**
@@ -16,8 +22,9 @@ package shipDock.framework.application.component
 	 * ...
 	 * @author ch.ji
 	 */
-	public class UIAgent implements IDispose, ICallLater, IUIAgent
+	public class UIAgent implements IDispose, ICallLater, IUIAgent, IObserver
 	{
+		
 		
 		/**控件数据*/
 		private var _data:Object;
@@ -39,33 +46,70 @@ package shipDock.framework.application.component
 		private var _action:IAction;
 		/**回调函数集合*/
 		private var _callbacks:MethodCenter;
-		/**被代理的对象*/
-		private var _agented:*;
 		/**属性修改队列*/
 		private var _propertyChangeList:Array;
+		/**被代理的对象*/
+		private var _agented:*;
 		
 		public function UIAgent(target:*) 
 		{
 			this._enabled = true;
 			this._isApplyCallLater = true;
+			
 			this._subjects = { };
-			this._propertiesChanged = { };
 			this._agented = target;
 			this._propertyChangeList = [];
-			this._eventAgent = new EventDispatcher();
+			this._propertiesChanged = { };
+			
 			this._callbacks = new MethodCenter();
+			this._eventAgent = new EventDispatcher();
+			
+			var subject:ISubject = SubjectManager.getSubject(UIAgentSubject.DEFAULT_NAME);
+			subject.registered(this);
 		}
-		
-		/* INTERFACE shipDock.framework.application.interfaces.ICallLater */
 		
 		public function dispose():void {
 			if (this._isDisposed)
 				return;
 			this._isDisposed = true;
+			var k:*, subject:ISubject;
+			for (k in this._subjects) {
+				subject = this._subjects[k];
+				(subject) && subject.unsubscribe(this);
+			}			
+			
+			reclaim(this._action);
+			
 			this.disposeData();
 			this.disposeAgent();
 			this._eventAgent.removeEventListener(Event.ENTER_FRAME, this.invalidateHandler);
 			this._eventAgent = null;
+			this._subjects = null;
+			this._action = null;
+		}
+		
+		public function notify(notice:INotice):* {
+			if (notice.name == Event.ADDED_TO_STAGE) {
+				(notice.data == this._agented) && this.addedToStage();
+			}
+		}
+		
+		protected function addedToStage():void {
+			
+		}
+		
+		public function setAction(value:IAction):void {
+			reclaim(this._action);
+			this._action = value;
+			this._action.setProxyed(this);
+		}
+		
+		public function setSubject(subject:ISubject):void {
+			(this._subjects && !this._subjects[subject.subjectName]) && (this._subjects[subject.subjectName] = subject);
+		}
+		
+		public function removeSubject(subject:ISubject):void {
+			(this._subjects) && (delete this._subjects[subject.subjectName]);
 		}
 		
 		protected function disposeAgent():void {
@@ -181,6 +225,16 @@ package shipDock.framework.application.component
 		public function set data(value:Object):void 
 		{
 			this.setProperty("data", value, false);
+		}
+		
+		public function get action():IAction 
+		{
+			return _action;
+		}
+		
+		protected function get agented():* 
+		{
+			return _agented;
 		}
 		
 	}

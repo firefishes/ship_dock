@@ -78,7 +78,7 @@ package shipDock.framework.core.command
 			return result;
 		}
 		
-		public function addNotice(noticeName:String, handler:Function):void
+		public function addNotice(noticeName:String, handler:Function, owner:* = null):void
 		{
 			this._noticeController.addNotice(noticeName, this, handler);
 		}

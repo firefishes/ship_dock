@@ -217,7 +217,7 @@ package action
 					typeKey = "URL";//URL链接数据
 				}
 				var airObjects:Array = event.clipboard.getData(type) as Array; //获取剪切板中的数据
-				this.invokeProxyed(new InvokeProxyedNotice("nativeDragFor" + typeKey, new NativeDragParams(airObjects)));
+				this.callProxyed("nativeDragFor" + typeKey, new NativeDragParams(airObjects), false);
 			}
 		}
 		

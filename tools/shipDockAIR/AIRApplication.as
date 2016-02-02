@@ -1,6 +1,7 @@
 package
 {
 	import action.NativeDragParams;
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -12,6 +13,7 @@ package
 	import flash.ui.Keyboard;
 	import flash.utils.setInterval;
 	import shipDock.framework.application.component.UIAgent;
+	import shipDock.framework.application.manager.ViewManager;
 	
 	import action.AIRMainAction;
 	
@@ -41,6 +43,9 @@ package
 		
 		private var _logsCount:int = 0;
 		
+		private var _UILayer:Sprite;
+		private var _popupLayer:Sprite;
+		
 		public function AIRApplication(applyNotice:Boolean = true, applyCommand:Boolean = true, applySOManager:Boolean = true):void
 		{
 			var framework:SDFramework = new SDFramework(this.framworkStartUp, applyNotice, applyCommand, applySOManager);
@@ -55,6 +60,7 @@ package
 		{
 			new FileManager();
 			new ApplicationDomainManager();
+			new ViewManager();
 		}
 		
 		protected function initSkinClass():void
@@ -155,7 +161,18 @@ package
 			this._action = new _actionClass();
 			this._action.setProxyed(this);
 			
+			this.initLayers();
+			
+			ViewManager.getInstance().setViewContainer(this._popupLayer, DisplayObject);
 			this._action.loadAIRConfig(this.createUI);
+		}
+		
+		protected function initLayers():void {
+			this._UILayer = new Sprite();
+			this._popupLayer = new Sprite();
+			
+			this.addChild(this._UILayer);
+			this.addChild(this._popupLayer);
 		}
 		
 		protected function reloadAIRConfigSuccess():void
@@ -183,7 +200,7 @@ package
 //			this.setLog(this._id + " version " + appXml[2]);
 			this.setLog(this._action.id + " start. Welcome!");
 			
-			this.addChild(this._skin);
+			this._UILayer.addChild(this._skin);
 			
 			this._agent = new UIAgent(this);
 			this._agent.data = { };

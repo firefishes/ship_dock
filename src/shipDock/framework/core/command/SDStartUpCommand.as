@@ -3,6 +3,7 @@ package shipDock.framework.core.command
 	import shipDock.framework.core.action.ActionController;
 	import shipDock.framework.core.interfaces.INotice;
 	import shipDock.framework.core.notice.CoreNotice;
+	import shipDock.framework.core.observer.UIAgentSubject;
 	/**
 	 * ...
 	 * @author ch.ji
@@ -37,7 +38,8 @@ package shipDock.framework.core.command
 		}
 		
 		private function initProxies():void {
-			var notice:CoreNotice = new CoreNotice(CoreCommand.REGISTERED_PROXYIES_COMMAND, this.proxyList);
+			var list:Array = this.proxyList.concat(UIAgentSubject);
+			var notice:CoreNotice = new CoreNotice(CoreCommand.REGISTERED_PROXYIES_COMMAND, list);
 			this.sendNotice(notice);
 		}
 		

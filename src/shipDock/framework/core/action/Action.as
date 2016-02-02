@@ -3,7 +3,6 @@ package shipDock.framework.core.action
 	
 	import flash.utils.getQualifiedClassName;
 	import shipDock.framework.core.events.ProxyedEvent;
-	import starling.events.EventDispatcher;
 	
 	import shipDock.framework.core.command.CommandController;
 	import shipDock.framework.core.interfaces.IAction;
@@ -66,16 +65,18 @@ package shipDock.framework.core.action
 		private var _commandListeners:Object;
 		/**触发被代理对象逻辑调用的消息缓存*/
 		private var _invokeProxyedNotice:InvokeProxyedNotice;
+		/**被代理对象是否可以派发调动消息发送的事件，默认开启，若被代理对象不支持事件派发则需要设置为false*/
+		private var _applyNoticeEvent:Boolean;
 		
 		public function Action(name:String = null)
 		{
 			this._actionName = name;
+			this._applyNoticeEvent = true;
 			this._subjects = {};
 			this._commandListeners = {};
 			this._actionController = ActionController.getInstance();
 			this._commandController = CommandController.getInstance();
 			this._noticeController = NoticeController.getInstance();
-			
 			this._actionController.addAction(this.actionName, this);
 		}
 		
@@ -98,11 +99,9 @@ package shipDock.framework.core.action
 		}
 		
 		protected function initNotices():void {
-			this.addNotice(SDNoticeName.SD_INVOKE_PROXYED, this.invokeProxyed);
 		}
 		
 		protected function cleanNotices():void {
-			this.removeNotice(SDNoticeName.SD_INVOKE_PROXYED, this.invokeProxyed);
 		}
 		
 		/**
@@ -125,7 +124,7 @@ package shipDock.framework.core.action
 					if (!!cls) //感兴趣的命令，用于处理一族消息集合
 						this.registered(name, cls);
 					else //感兴趣的消息，用于处理广播消息
-						this.addNotice(name, this.actionNotify);
+						this.addNotice(name, this.actionNotify, this);
 				}
 				i++;
 			}
@@ -191,23 +190,33 @@ package shipDock.framework.core.action
 		}
 		
 		/**
+		 * 
 		 * 调用被代理对象的开放接口（逻辑代理调用逻辑代理、被代理对象）
-		 *
-		 * @param	name
+		 * 
+		 * @param	invokeName
 		 * @param	data
+		 * @param	isNotify
 		 * @param	isNewNotice
 		 * @return
 		 */
-		public function callProxyed(invokeName:String, data:* = null, isNewNotice:Boolean = false):*
+		public function callProxyed(name:String, data:* = null, isNotify:Boolean = true, isNewNotice:Boolean = false):*
 		{
 			var result:*;
 			var manager:ObjectPoolManager = ObjectPoolManager.getInstance();
-			(this._invokeProxyedNotice == null) && (this._invokeProxyedNotice = manager.fromPool(InvokeProxyedNotice, invokeName, data));//创建消息缓存
-			var notice:InvokeProxyedNotice = (isNewNotice) ? manager.fromPool(InvokeProxyedNotice, invokeName, data) : this._invokeProxyedNotice;
-			notice.changeName(invokeName);
-			notice.changeData(data);
-			notice.isAutoDispose = false;
-			result = this.sendNotice(notice);
+			(!this._invokeProxyedNotice) && (this._invokeProxyedNotice = manager.fromPool(InvokeProxyedNotice, name, data));//创建消息缓存
+			
+			var notice:InvokeProxyedNotice = (isNewNotice) ? manager.fromPool(InvokeProxyedNotice, name, data) : this._invokeProxyedNotice;
+			
+			if (isNotify) {//调用其他逻辑代理的对外接口
+				notice.changeName(name);
+				notice.changeData(data);
+				notice.isAutoDispose = false;
+				result = this.sendNotice(notice);
+			}else {
+				notice.invokeName = name;
+				result = this.invokeProxyed(notice);//调用自己代理对象的接口
+			}
+			
 			(isNewNotice) && manager.toPool(notice);
 			return result;
 		}
@@ -218,7 +227,7 @@ package shipDock.framework.core.action
 		 * @param	notice
 		 * @return
 		 */
-		protected function invokeProxyed(notice:InvokeProxyedNotice):* {
+		private function invokeProxyed(notice:InvokeProxyedNotice):* {
 			if(!this._proxyed)
 				return null;
 			var result:* = (this._proxyed.hasOwnProperty(notice.invokeName)) ? 
@@ -256,7 +265,7 @@ package shipDock.framework.core.action
 			return result;
 		}
 		
-		public function addNotice(noticeName:String, handler:Function):void
+		public function addNotice(noticeName:String, handler:Function, owner:* = null):void
 		{
 			this._noticeController.addNotice(noticeName, this, handler);
 		}
@@ -324,10 +333,7 @@ package shipDock.framework.core.action
 		 * 
 		 */
 		protected function initProxyedEvents():void {
-			var target:EventDispatcher = this._proxyed as EventDispatcher;
-			if (!target)
-				return;
-			target.addEventListener(ProxyedEvent.PROXYED_SEND_NOTICE_EVENT, this.proxyedSendNoticeHandler);
+			(this._proxyed && this._applyNoticeEvent) && this._proxyed.addEventListener(ProxyedEvent.PROXYED_SEND_NOTICE_EVENT, this.proxyedSendNoticeHandler);
 		}
 		
 		/**
@@ -335,10 +341,7 @@ package shipDock.framework.core.action
 		 * 
 		 */
 		protected function cleanProxyedEvents():void {
-			var target:EventDispatcher = this._proxyed as EventDispatcher;
-			if (!target)
-				return;
-			target.removeEventListener(ProxyedEvent.PROXYED_SEND_NOTICE_EVENT, this.proxyedSendNoticeHandler);
+			(this._proxyed && this._applyNoticeEvent) && this._proxyed.removeEventListener(ProxyedEvent.PROXYED_SEND_NOTICE_EVENT, this.proxyedSendNoticeHandler);
 		}
 		
 		/**
@@ -450,6 +453,16 @@ package shipDock.framework.core.action
 		protected function get preregisteredCommand():Array
 		{
 			return [];
+		}
+		
+		public function get applyNoticeEvent():Boolean 
+		{
+			return _applyNoticeEvent;
+		}
+		
+		public function set applyNoticeEvent(value:Boolean):void 
+		{
+			_applyNoticeEvent = value;
 		}
 		
 	}

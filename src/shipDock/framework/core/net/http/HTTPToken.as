@@ -108,7 +108,7 @@ package shipDock.framework.core.net.http
 			return result;
 		}
 		
-		public function addNotice(noticeName:String, handler:Function):void {
+		public function addNotice(noticeName:String, handler:Function, owner:* = null):void {
 			NoticeManager.addNotice(noticeName, this, handler);
 		}
 		

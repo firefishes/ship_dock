@@ -11,7 +11,7 @@ package shipDock.framework.core.interfaces
 	 */
 	public interface INotify extends INoticeSender
 	{
-		function addNotice(noticeName:String, handler:Function):void;
+		function addNotice(noticeName:String, handler:Function, owner:* = null):void;
 		function removeNotice(noticeName:String, handler:Function):void;
 	}
 	

@@ -14,7 +14,7 @@ package shipDock.framework.core.notice {
 		
 		private var _invokeName:String;
 		
-		public function InvokeProxyedNotice(invokeName:String, params:*=null) 
+		public function InvokeProxyedNotice(invokeName:String, params:* = null) 
 		{
 			super(SDNoticeName.SD_INVOKE_PROXYED, params);
 			this._invokeName = invokeName;
@@ -38,6 +38,11 @@ package shipDock.framework.core.notice {
 		
 		public function get invokeName():String {
 			return this._invokeName;
+		}
+		
+		public function set invokeName(value:String):void 
+		{
+			_invokeName = value;
 		}
 	}
 

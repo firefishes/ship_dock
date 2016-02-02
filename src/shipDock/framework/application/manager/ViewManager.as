@@ -1,6 +1,8 @@
 package shipDock.framework.application.manager
 {
 	import flash.utils.getDefinitionByName;
+	import shipDock.framework.application.utils.DisplayUtils;
+	import shipDock.framework.core.utils.gc.reclaim;
 	
 	import shipDock.framework.application.events.ViewTransformEffectEvent;
 	import shipDock.framework.application.interfaces.IViewTransformEffect;
@@ -18,11 +20,11 @@ package shipDock.framework.application.manager
 	import shipDock.ui.IView;
 	
 	import starling.display.DisplayObject;
-	import starling.display.Sprite;
-	import starling.events.Event;
 	
 	/**
 	 * 界面转换管理器
+	 * 
+	 * 支持starling和原生的应用
 	 *
 	 * @author ch.ji
 	 *
@@ -31,6 +33,8 @@ package shipDock.framework.application.manager
 	{
 		
 		public static const VIEW_MANAGER:String = "viewMgr";
+		
+		public static const ENTER_FRAME_EVENT:String = "enterFrame";//帧事件，为了不引入具体事件类而增加的和原生相同的事件名
 		
 		public static function getInstance():ViewManager
 		{
@@ -48,13 +52,15 @@ package shipDock.framework.application.manager
 		/**显示过的历史 界面堆栈*/
 		private var _viewStack:Array;
 		/**界面总容器*/
-		private var _viewContainer:Sprite;
+		private var _viewContainer:*;
 		/**界面转换执行队列*/
 		private var _transformQueue:QueueExecuter;
 		/**即将切换的界面类使用的构造函数列表*/
 		private var _waitingViewParams:Object;
 		/**记录所有使用视图逻辑代理打开的界面*/
 		private var _actionViews:HashMap;
+		/**显示类的基类*/
+		private var _displayBaseClass:Class;
 		
 		public function ViewManager()
 		{
@@ -71,13 +77,14 @@ package shipDock.framework.application.manager
 		 * @param container
 		 *
 		 */
-		public function setViewContainer(container:Sprite):void
+		public function setViewContainer(container:*, displayCls:Class = null):void
 		{
 			if (!!this._viewContainer)
 			{
-				this._viewContainer.removeEventListener(Event.ENTER_FRAME, this.viewTransform);
+				this._viewContainer.removeEventListener(ENTER_FRAME_EVENT, this.viewTransform);
 				this.cleanViewContainer();
 			}
+			this._displayBaseClass = (displayCls) ? displayCls : DisplayObject;
 			this._viewContainer = container;
 		}
 		
@@ -131,7 +138,7 @@ package shipDock.framework.application.manager
 			var cls:Class = getDefinitionByName(clsFullName) as Class;
 			this._waitingViewParams = {"key": cls, "params": clsArgs, "isInStack": isInStack}; //本次切换界面堆栈所需的数据
 			(viewAction) && (this._waitingViewParams["key"] = viewAction.actionName);
-			this._viewContainer.addEventListener(Event.ENTER_FRAME, this.viewTransform); //下一帧开始界面转换
+			this._viewContainer.addEventListener(ENTER_FRAME_EVENT, this.viewTransform); //下一帧开始界面转换
 		}
 		
 		/**
@@ -140,9 +147,9 @@ package shipDock.framework.application.manager
 		 * @param event
 		 *
 		 */
-		private function viewTransform(event:Event):void
+		private function viewTransform(event:*):void
 		{
-			this._viewContainer.removeEventListener(Event.ENTER_FRAME, this.viewTransform);
+			this._viewContainer.removeEventListener(ENTER_FRAME_EVENT, this.viewTransform);
 			
 			this._transformQueue.reset(); //重置执行流程
 			
@@ -215,7 +222,7 @@ package shipDock.framework.application.manager
 		 * 
 		 */		
 		private function beforeShowCurrentView():void {
-			(!!this._currentView) && this._viewContainer.addChild(this._currentView as DisplayObject);
+			(!!this._currentView) && this._viewContainer.addChild(this._currentView as this._displayBaseClass);
 		}
 		
 		/**
@@ -233,7 +240,7 @@ package shipDock.framework.application.manager
 					var prevViewAction:ISDViewAction = this._actionViews.getValue(this._prevView, true);
 					prevViewAction.sendNotice(SDNoticeName.SD_UI, prevViewAction.actionName, UICommand.CLOSE_VIEW_COMMAND);
 				}else {
-					(this._prevView as DisplayObject).removeFromParent();
+					DisplayUtils.removeFromDisplay(this._prevView);
 					_prevView.dispose();
 				}
 			}
@@ -245,22 +252,15 @@ package shipDock.framework.application.manager
 		 */
 		private function cleanViewContainer():void
 		{
-			this._viewContainer.removeChildren();
-			if (!!this._waitingView)
-			{
-				this._waitingView.dispose();
-				this._waitingView = null;
-			}
-			if (!!this._prevView)
-			{
-				this._prevView.dispose();
-				this._prevView = null;
-			}
-			if (!!this._currentView)
-			{
-				this._currentView.dispose();
-				this._currentView = null;
-			}
+			DisplayUtils.removeChildren(this._viewContainer);
+			
+			reclaim(this._prevView);
+			reclaim(this._waitingView);
+			reclaim(this._currentView);
+			
+			this._prevView = null;
+			this._waitingView = null;
+			this._currentView = null;
 		}
 		
 		public function get isTransfroming():Boolean
