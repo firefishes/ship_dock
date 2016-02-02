@@ -3,12 +3,13 @@ package shipDock.framework.application.loader
 	import flash.display.Loader;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
+	import shipDock.framework.core.utils.gc.reclaimLoader;
 	
 	/**
 	 * 网页可视资源加载器（包含本地使用URL方式加载的资源）
 	 *
 	 * ...
-	 * @author shaoxin.ji
+	 * @author ch.ji
 	 */
 	public class DisplayAssetLoader extends SDLoader
 	{
@@ -17,11 +18,14 @@ package shipDock.framework.application.loader
 		private var _bytesSource:ByteArray;
 		private var _loaderContext:LoaderContext;
 		
-		public function DisplayAssetLoader(url:String, complete:Function = null, progress:Function = null)
+		public function DisplayAssetLoader(source:*, complete:Function = null, progress:Function = null)
 		{
-			super(url, complete, progress);
+			var value:String = (source is String) ? source : null;
+			super(value, complete, progress);
+			
 			this.loadType = LoadType.LOAD_TYPE_WEB_ASSET;
 			this._loader = new Loader();
+			(source is ByteArray) && (this.bytesSource = source);
 			this.addEvents(this._loader.contentLoaderInfo);
 		}
 		
@@ -29,6 +33,8 @@ package shipDock.framework.application.loader
 		{
 			super.dispose();
 			this.unload();
+			this._bytesSource = null;
+			this._loaderContext = null;
 			if (this.isReleaseInPool)
 				return;
 			this.removeEvents(this._loader.contentLoaderInfo);
@@ -37,10 +43,7 @@ package shipDock.framework.application.loader
 		
 		override public function unload():void
 		{
-			if (this.isLoading && !!this._loader)
-			{
-				this._loader.unload();
-			}
+			(this.isLoading) && reclaimLoader(this._loader);
 			super.unload();
 		}
 		
@@ -48,17 +51,9 @@ package shipDock.framework.application.loader
 		{
 			super.commit();
 			if (this.loadType == LoadType.LOAD_TYPE_WEB_ASSET)
-			{
 				this._loader.load(this._request, this._loaderContext);
-				
-			}
 			else if (this.loadType == LoadType.LOAD_TYPE_BINARY)
-			{
-				if (!!this._bytesSource)
-				{
-					this._loader.loadBytes(this._bytesSource, this._loaderContext);
-				}
-			}
+				(!!this._bytesSource) && this._loader.loadBytes(this._bytesSource, this._loaderContext);
 		}
 		
 		override protected function loadCompleted(event:* = null):void
@@ -79,6 +74,7 @@ package shipDock.framework.application.loader
 		
 		public function set bytesSource(value:ByteArray):void
 		{
+			this.loadType = LoadType.LOAD_TYPE_BINARY;
 			_bytesSource = value;
 		}
 		

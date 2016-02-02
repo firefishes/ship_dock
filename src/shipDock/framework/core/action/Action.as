@@ -206,10 +206,9 @@ package shipDock.framework.core.action
 			(!this._invokeProxyedNotice) && (this._invokeProxyedNotice = manager.fromPool(InvokeProxyedNotice, name, data));//创建消息缓存
 			
 			var notice:InvokeProxyedNotice = (isNewNotice) ? manager.fromPool(InvokeProxyedNotice, name, data) : this._invokeProxyedNotice;
-			
+			notice.changeData(data);
 			if (isNotify) {//调用其他逻辑代理的对外接口
 				notice.changeName(name);
-				notice.changeData(data);
 				notice.isAutoDispose = false;
 				result = this.sendNotice(notice);
 			}else {

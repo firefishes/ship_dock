@@ -65,9 +65,7 @@ package shipDock.framework.application.manager
 		{
 			var result:*;
 			if (file == null)
-			{
 				return;
-			}
 			if (file.exists)
 			{
 				var fileStream:FileStream = this.openFileSteam(file, FileMode.READ);
@@ -81,6 +79,11 @@ package shipDock.framework.application.manager
 					case AssetType.TYPE_TEXT: //读取文本格式
 						result = fileStream.readUTFBytes(fileStream.bytesAvailable);
 						break;
+					default:
+						var bytes:ByteArray = new ByteArray();
+						fileStream.readBytes(bytes, 0, fileStream.bytesAvailable);
+						result = bytes;
+						break;
 				}
 				fileStream.close();
 			}
@@ -88,23 +91,31 @@ package shipDock.framework.application.manager
 		}
 		
 		/**
-		 * 向文件写入二进制数据
+		 * 
 		 *
 		 * @param	path
 		 * @param	bytes
 		 */
-		public function writeBytes(path:String, bytes:ByteArray):void
+		/**
+		 * 向文件写入二进制数据
+		 * 
+		 * @param	path
+		 * @param	bytes
+		 * @param	directoryFile
+		 */
+		public function writeBytes(path:String, bytes:ByteArray, directoryFile:File = null):void
 		{
-			var stream:FileStream = this.openFileSteam(path, FileMode.WRITE);
+			var stream:FileStream = this.openFileSteam(path, FileMode.WRITE, directoryFile);
 			stream.writeBytes(bytes);
 			stream.close();
 		}
 		
 		/**
 		 * 向文件写入UTF文本数据
-		 *
+		 * 
 		 * @param	path
 		 * @param	fileContent
+		 * @param	directoryFile
 		 */
 		public function writeUTFBytes(path:String, fileContent:String, directoryFile:File = null):void
 		{
@@ -159,55 +170,37 @@ package shipDock.framework.application.manager
 		
 		public function get appFile():File
 		{
-			if (this._appFile == null)
-			{
-				this._appFile = File.applicationDirectory;
-			}
+			(!this._appFile) && (this._appFile = File.applicationDirectory);
 			return _appFile;
 		}
 		
 		public function get storageFile():File
 		{
-			if (this._storageFile == null)
-			{
-				this._storageFile = File.applicationStorageDirectory;
-			}
+			(!this._storageFile) && (this._storageFile = File.applicationStorageDirectory);
 			return _storageFile;
 		}
 		
 		public function get documentFile():File
 		{
-			if (this._documentFile == null)
-			{
-				this._documentFile = File.documentsDirectory;
-			}
+			(!this._documentFile) && (this._documentFile = File.documentsDirectory);
 			return _documentFile;
 		}
 		
 		public function get desktopFile():File
 		{
-			if (this._desktopFile == null)
-			{
-				this._desktopFile = File.desktopDirectory;
-			}
+			(!this._desktopFile) && (this._desktopFile = File.desktopDirectory);
 			return _desktopFile;
 		}
 		
 		public function get userFile():File
 		{
-			if (this._userFile == null)
-			{
-				this._userFile = File.userDirectory;
-			}
+			(!this._userFile) && (this._userFile = File.userDirectory);
 			return _userFile;
 		}
 		
 		public function get cacheFile():File
 		{
-			if (this._cacheFile == null)
-			{
-				this._cacheFile = File.cacheDirectory;
-			}
+			(!this._cacheFile) && (this._cacheFile = File.cacheDirectory);
 			return _cacheFile;
 		}
 	}

@@ -101,7 +101,7 @@ package shipDock.framework.application.component
 		public function setAction(value:IAction):void {
 			reclaim(this._action);
 			this._action = value;
-			this._action.setProxyed(this);
+			this._action.setProxyed(this._eventAgent);
 		}
 		
 		public function setSubject(subject:ISubject):void {
