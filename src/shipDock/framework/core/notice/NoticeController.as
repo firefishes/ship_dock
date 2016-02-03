@@ -48,17 +48,17 @@ package shipDock.framework.core.notice
 			(!observer) && (observer = this._globalObserver);
 			var list:Array = this._observers.getList(observer);
 			(list == null) && (list = []);
-			(list.indexOf(noticeName) == -1) && list.push(noticeName); //判断此观察者是否添加过相同消息
+			(list.indexOf(noticeName) == -1) && list.push(noticeName); //观察者没有添加过此消息时将消息添加到观察者的消息列表中
 			
 			this._observers.put(observer, list);
 			
-			list = this.getNoticeList(noticeName);
+			list = this.getNoticeList(noticeName);//获取注册了此消息的所有对象
 			(list == null) && (list = []);
 			var item:Object = {};
-			(observer is IAction) && (item[KEY_ACTION_NAME] = (observer as IAction).actionName);
+			(observer is IAction) && (item[KEY_ACTION_NAME] = (observer as IAction).actionName);//如是逻辑代理机制，设置逻辑代理名
 			item[KEY_OWNER] = observer;
 			item[KEY_METHOD] = new MethodElement(handler, null, observer);
-			list.push(item); //添加新的消息项
+			list.push(item); //注册消息
 			this._notices.put(noticeName, list);
 		}
 		
