@@ -11,7 +11,7 @@ package shipDock.ui
 	/**
 	 * 按钮条控件
 	 * 
-	 * 默认使用 SCGameButton 类创建此控件
+	 * 默认使用 SDQuadButton 类创建此控件
 	 * 
 	 * @author shaoxin.ji
 	 * 
@@ -20,7 +20,7 @@ package shipDock.ui
 	{
 		
 		private var _dataProvider:Array;//按钮条的数据集合
-		private var _buttonItemClass:Class;//按钮条单个按钮使用的类，默认使用SCGameButton类
+		private var _buttonItemClass:Class;//按钮条单个按钮使用的类，默认使用SDQuadButton类
 		private var _buttonList:Array;//按钮列表
 		private var _gap:Number = 0;//按钮间隔
 		private var _selectedIndex:int = -1;//当前被选中的按钮索引

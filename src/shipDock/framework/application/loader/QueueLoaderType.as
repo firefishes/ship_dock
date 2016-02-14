@@ -20,20 +20,20 @@ package shipDock.framework.application.loader
 			var list:Array = name.split(".");
 			var tail:String = list[list.length - 1];
 			var ranges:Array = [{"type":QUEUE_LOADER_TYPE_DISPLAY_ASSET, "range":AssetType.TYPE_DISPLAY}, {"type":QUEUE_LOADER_TYPE_DATA, "range":AssetType.TYPE_DATA}];
-			var result:Object = getLoadType(ranges);
-			result = (result) ? result["type"] : QUEUE_LOADER_TYPE_DISPLAY_ASSET;
+			var item:Object = getLoadType(ranges, tail);
+			var result:int = (item) ? item["type"] : QUEUE_LOADER_TYPE_DISPLAY_ASSET;
 			return result;
 		}
 		
-		private static function getLoadType(ranges:Array, tail:String):int
+		private static function getLoadType(ranges:Array, tail:String):Object
 		{
-			var list:Array = ranges.pop() as Array;
+			var item:Object = ranges.pop() as Array;
+			var list:Array = item["range"];
 			var index:int = -1;
 			if (list)
 				index = list.indexOf(tail);
 			else
 				return null;
-			(index == -1) && (index = getLoadType(ranges, tail));
 			return (index == -1) ? getLoadType(ranges, tail) : ranges.pop();
 		}
 		

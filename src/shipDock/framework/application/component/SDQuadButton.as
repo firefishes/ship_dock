@@ -86,22 +86,13 @@ package shipDock.framework.application.component
 			{
 				textureName = this._textureName + this._buttonStates[i];
 				this._buttonImages[i] = assetManager.getImage(textureName);
-				if (!!this._buttonImages[i])
-				{
-					(this._buttonImages[i] as SDImage).rotation = this._pi;
-				}
+				(!!this._buttonImages[i]) && ((this._buttonImages[i] as SDImage).rotation = this._pi);
 				
 				textureName = this._textureName + this._buttonStates[i] + "Label";
 				this._buttonLabels[i] = assetManager.getImage(textureName, false, true);
-				if (!!this._buttonLabels[i])
-				{
-					(this._buttonLabels[i] as SDImage).rotation = this._pi;
-				}
+				(!!this._buttonLabels[i]) && ((this._buttonLabels[i] as SDImage).rotation = this._pi);
 				
-				if (this._needProvit)
-				{
-					DisplayUtils.setPovit(this, -(this._buttonLabels[i] as SDImage).width / 2, -(this._buttonLabels[i] as SDImage).height / 2);
-				}
+				(this._needProvit) && DisplayUtils.setPovit(this, -(this._buttonLabels[i] as SDImage).width / 2, -(this._buttonLabels[i] as SDImage).height / 2);
 				i++;
 			}
 		}
@@ -116,44 +107,25 @@ package shipDock.framework.application.component
 		public function changeToUp():void
 		{
 			this.reset();
-			if (!!this.buttonUp)
-			{
-				this.addImage(this.buttonUp);
-			}
-			if (!!this.labelUpImage)
-			{
-				this.addImage(this.labelUpImage);
-			}
+			(!!this.buttonUp) && this.addImage(this.buttonUp);
+			(!!this.labelUpImage) && this.addImage(this.labelUpImage);
 		}
 		
 		public function changeToDown():void
 		{
 			this.reset();
 			if (!!this.buttonDown)
-			{
 				this.addImage(this.buttonDown);
-			}
 			else
-			{
 				this.addImage(this.buttonUp);
-			}
-			if (!!this.labelDownImage)
-			{
-				this.addImage(this.labelDownImage);
-			}
+			(!!this.labelDownImage) && this.addImage(this.labelDownImage);
 		}
 		
 		public function changeToDisabled():void
 		{
 			this.reset();
-			if (!!this.buttonDisabled)
-			{
-				this.addImage(this.buttonDisabled);
-			}
-			if (!!this.labelDisabledImage)
-			{
-				this.addImage(this.labelDisabledImage);
-			}
+			(!!this.buttonDisabled) && this.addImage(this.buttonDisabled);
+			(!!this.labelDisabledImage) && this.addImage(this.labelDisabledImage);
 		}
 		
 		private function onSDQuadButtonTouch(e:TouchEvent):void
@@ -184,24 +156,14 @@ package shipDock.framework.application.component
 		public function onEnded():void
 		{
 			if (!this._isTrigger)
-			{
 				this.changeToUp();
-			}
 			else
 			{
-				if (this._selected)
-				{
-					this.changeToUp();
-				}
+				(this._selected) && this.changeToUp();
 				this.selectedChanged();
 			}
 			if (this._triggerPhase == TouchPhase.ENDED)
-			{
-				if (!!this._click)
-				{
-					this._click();
-				}
-			}
+				(!!this._click) && this._click();
 		}
 		
 		public function onBegin():void
@@ -209,19 +171,14 @@ package shipDock.framework.application.component
 			this.changeToDown();
 			if (this._triggerPhase == TouchPhase.BEGAN)
 			{
-				if (!!this._click)
-				{
-					this._click();
-				}
+				(!!this._click) && this._click();
 				if (!this.isTrigger)
 				{
 					this._resetButtonTimer.reset();
 					this._resetButtonTimer.start();
 				}
 				else
-				{
 					this.selectedChanged();
-				}
 			}
 		}
 		
@@ -233,7 +190,6 @@ package shipDock.framework.application.component
 		public function onTimeout(e:TimerEvent):void
 		{
 			this.changeToUp();
-		
 		}
 		
 		public function get buttonUp():SDImage
@@ -283,22 +239,12 @@ package shipDock.framework.application.component
 		
 		public function set selected(value:Boolean):void
 		{
-			if (value == this._selected)
-			{
+			if ((value == this._selected) || !this.touchable)
 				return;
-			}
-			if (!this.touchable)
-			{
-				return;
-			}
 			if (this._selected)
-			{
 				this.changeToUp();
-			}
 			else
-			{
 				this.changeToDown();
-			}
 			_selected = value;
 		}
 		
@@ -311,13 +257,9 @@ package shipDock.framework.application.component
 		{
 			super.touchable = value;
 			if (value)
-			{
 				this.changeToUp();
-			}
 			else
-			{
 				this.changeToDisabled();
-			}
 		}
 	
 	}

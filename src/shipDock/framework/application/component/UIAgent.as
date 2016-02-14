@@ -1,10 +1,10 @@
 package shipDock.framework.application.component 
 {
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
 	import shipDock.framework.application.interfaces.IUIAgent;
 	import shipDock.framework.application.interfaces.ICallLater;
 	import shipDock.framework.application.interfaces.IComponent;
+	import shipDock.framework.application.SDConfig;
 	import shipDock.framework.core.interfaces.IAction;
 	import shipDock.framework.core.interfaces.IDispose;
 	import shipDock.framework.core.interfaces.INotice;
@@ -23,19 +23,15 @@ package shipDock.framework.application.component
 	 * @author ch.ji
 	 */
 	public class UIAgent implements IDispose, ICallLater, IUIAgent, IObserver
-	{
-		
-		
+	{	
 		/**控件数据*/
 		private var _data:Object;
 		/**控件事件代理，使用原生事件派发器，增加适用性*/
-		private var _eventAgent:EventDispatcher;
+		private var _eventAgent:*;
 		/**控件内部参数集合*/
 		private var _propertiesChanged:Object;
 		/**控件作为观察者时感兴趣的主题*/
 		private var _subjects:Object;
-		/**控件是否可用*/
-		private var _enabled:Boolean;;
 		/**控件是否已被销毁*/
 		private var _isDisposed:Boolean;
 		/**是否在移除出显示列表后自动销毁*/
@@ -53,19 +49,24 @@ package shipDock.framework.application.component
 		
 		public function UIAgent(target:*) 
 		{
-			this._enabled = true;
-			this._isApplyCallLater = true;
 			
 			this._subjects = { };
 			this._agented = target;
 			this._propertyChangeList = [];
 			this._propertiesChanged = { };
 			
+			(!(this._agented is SDConfig.eventCls) && !(this._agented is SDConfig.eventRawCls)) && 
+				(this._eventAgent = new SDConfig.eventRawCls());//如果被代理对象不能派发事件，则启用事件代理器，负责派发事件
+			
+			if (this._eventAgent)//启用事件代理器则无callLater机制，否则根据被代理对象是否为显示对象子类情况开启
+				this._isApplyCallLater = false;
+			else
+				this._isApplyCallLater = (this._agented is SDConfig.displayCls) || (this._agented is SDConfig.displayRawCls);
+			
 			this._callbacks = new MethodCenter();
-			this._eventAgent = new EventDispatcher();
 			
 			var subject:ISubject = SubjectManager.getSubject(UIAgentSubject.DEFAULT_NAME);
-			subject.registered(this);
+			subject.registered(this);//注册UI代理观察者，用于统一接收变更
 		}
 		
 		public function dispose():void {
@@ -82,7 +83,7 @@ package shipDock.framework.application.component
 			
 			this.disposeData();
 			this.disposeAgent();
-			this._eventAgent.removeEventListener(Event.ENTER_FRAME, this.invalidateHandler);
+			this._agented.removeEventListener(Event.ENTER_FRAME, this.invalidateHandler);
 			this._eventAgent = null;
 			this._subjects = null;
 			this._action = null;
@@ -101,7 +102,10 @@ package shipDock.framework.application.component
 		public function setAction(value:IAction):void {
 			reclaim(this._action);
 			this._action = value;
-			this._action.setProxyed(this._eventAgent);
+			if(this._eventAgent)
+				this._action.setProxyed(this._eventAgent);
+			else
+				this._action.setProxyed(this._agented);
 		}
 		
 		public function setSubject(subject:ISubject):void {
@@ -180,7 +184,7 @@ package shipDock.framework.application.component
 			return result;
 		}
 		
-		public function setProperty(propertyName:String, value:*, autoCommit:Boolean = true):void {
+		public function setProperty(propertyName:String, value:*, autoCommit:Boolean = false):void {
 			if (!this._propertiesChanged)
 				return;
 			this._propertiesChanged[propertyName] = value;
@@ -202,14 +206,14 @@ package shipDock.framework.application.component
 			if (!this._eventAgent)
 				return;
 			if(this._isApplyCallLater)
-				this._eventAgent.addEventListener(Event.ENTER_FRAME, this.invalidateHandler);
+				this._agented.addEventListener(Event.ENTER_FRAME, this.invalidateHandler);
 			else
 				this.redraw();
 		}
 		
 		public function invalidateHandler(event:* = null):void 
 		{
-			this._eventAgent.removeEventListener(Event.ENTER_FRAME, this.invalidateHandler);
+			this._agented.removeEventListener(Event.ENTER_FRAME, this.invalidateHandler);
 			this.redraw();
 		}
 		
@@ -224,7 +228,7 @@ package shipDock.framework.application.component
 		
 		public function set data(value:Object):void 
 		{
-			this.setProperty("data", value, false);
+			this.setProperty("data", value);
 		}
 		
 		public function get action():IAction 
@@ -235,6 +239,11 @@ package shipDock.framework.application.component
 		protected function get agented():* 
 		{
 			return _agented;
+		}
+		
+		protected function get callbacks():MethodCenter 
+		{
+			return _callbacks;
 		}
 		
 	}

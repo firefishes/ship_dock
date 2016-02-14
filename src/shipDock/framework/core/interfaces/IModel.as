@@ -7,7 +7,7 @@ package shipDock.framework.core.interfaces
 	 * ...
 	 * @author shaoxin.ji
 	 */
-	public interface IModel 
+	public interface IModel extends IDispose
 	{
 		function checkAndSet(keyField:String, property:String, source:Object):Boolean;
 		function updateData(data:Object):void;

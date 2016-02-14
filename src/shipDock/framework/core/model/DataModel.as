@@ -6,7 +6,7 @@ package shipDock.framework.core.model
 	 * 数据模型基类
 	 *
 	 * ...
-	 * @author shaoxin.ji
+	 * @author ch.ji
 	 */
 	public class DataModel implements IModel
 	{
@@ -17,6 +17,13 @@ package shipDock.framework.core.model
 		
 		public function DataModel()
 		{
+		}
+		
+		public function dispose():void
+		{
+			this._id = null;
+			this._type = -1;
+			this._name = null;
 		}
 		
 		public function clone():IModel
@@ -43,13 +50,8 @@ package shipDock.framework.core.model
 		{
 			var result:Boolean;
 			if (keyField == null)
-			{
 				return false;
-			}
-			if (property == null)
-			{
-				property = keyField;
-			}
+			(property == null) && (property = keyField);
 			if (source.hasOwnProperty(keyField) && this.hasOwnProperty(property))
 			{
 				result = true;

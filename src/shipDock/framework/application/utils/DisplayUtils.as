@@ -1,6 +1,7 @@
 package shipDock.framework.application.utils
 {
 	import flash.display.DisplayObjectContainer;
+	import starling.events.Event;
 	
 	import shipDock.framework.application.SDConfig;
 	
@@ -15,14 +16,6 @@ package shipDock.framework.application.utils
 	 */
 	public class DisplayUtils
 	{
-		
-		/**starling的显示基类*/
-		public static var cls:Class = starling.display.DisplayObject;
-		public static var clsContainer:Class = starling.display.DisplayObjectContainer;
-		
-		/**原生的显示基类*/
-		public static var rawCls:Class = flash.display.DisplayObject;
-		public static var rawClsContainer:Class = flash.display.DisplayObjectContainer;
 		
 		/**
 		 * 设置注册点位置
@@ -73,8 +66,8 @@ package shipDock.framework.application.utils
 				return;
 			if (w != 0)
 			{
-				var ratio:Number = (target is cls) ? SDConfig.globalScale : 1;
-				var offset:Number = (target is cls) ? SDConfig.mainOffsetX : 0;
+				var ratio:Number = (target is SDConfig.displayCls) ? SDConfig.globalScale : 1;
+				var offset:Number = (target is SDConfig.displayCls) ? SDConfig.mainOffsetX : 0;
 				target.x = (w - int(target.width * ratio)) / 2 - offset;
 			}
 		}
@@ -91,8 +84,8 @@ package shipDock.framework.application.utils
 				return;
 			if (h != 0)
 			{
-				var ratio:Number = (target is cls) ? SDConfig.globalScale : 1;
-				var offset:Number = (target is cls) ? SDConfig.mainOffsetX : 0;
+				var ratio:Number = (target is SDConfig.displayCls) ? SDConfig.globalScale : 1;
+				var offset:Number = (target is SDConfig.displayCls) ? SDConfig.mainOffsetX : 0;
 				target.y = (h - int(target.height * ratio)) / 2 - offset;
 			}
 		}
@@ -107,7 +100,7 @@ package shipDock.framework.application.utils
 		public static function getChildByPath(container:*, path:String = ""):*
 		{
 			var result:*;
-			if ((container is clsContainer) || (container is rawClsContainer))
+			if ((container is SDConfig.containerCls) || (container is SDConfig.containerRawCls))
 			{
 				var list:Array = path.split("/");
 				while (list.length > 0)
@@ -129,9 +122,9 @@ package shipDock.framework.application.utils
 		{
 			if(child == null)
 				return;
-			if (child is cls)
+			if (child is SDConfig.displayCls)
 				child.removeFromParent(isDispose);
-			else if (child is rawCls)
+			else if (child is SDConfig.displayRawCls)
 				(child.parent) && child.parent.removeChild(child);
 		}
 		
@@ -143,9 +136,9 @@ package shipDock.framework.application.utils
 		public static function removeChildren(container:*):void {
 			if (!container)
 				return;
-			if (container is clsContainer)
-				(container as clsContainer).removeChildren();
-			else if (container is rawClsContainer) {
+			if (container is SDConfig.containerCls)
+				container.removeChildren();
+			else if (container is SDConfig.containerRawCls) {
 				while (container.numChildren > 0) {
 					container.removeChildAt(0);
 				}
