@@ -16,6 +16,7 @@ package command
 		
 		public static const GET_AIR_CONFIG_COMMAND:String = "getAIRConfigCommand";
 		public static const RELOAD_CONFIG_COMMAND:String = "reloadConfigCommand";
+		public static const CREATE_MAP_COMMAND:String = "createMapCommand";
 		
 		public function AIRCommand() 
 		{
@@ -29,6 +30,10 @@ package command
 		
 		public function reloadConfigCommand(notice:SDANotice):void {
 			//this.AIRAction.registered();
+		}
+		
+		public function createMapCommand(notice:SDANotice):void {
+			
 		}
 		
 		private function get AIRAction():AIRMainAction {

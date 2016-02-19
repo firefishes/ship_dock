@@ -20,17 +20,22 @@ package command
 			script = script.replace("\r", "");
 			if(!script)
 				return;
-			var config:Object = this.sendNotice(new SDANotice(AIRCommand.GET_AIR_CONFIG_COMMAND, "scrips"));
+			var config:Object = this.sendNotice(new SDANotice(AIRCommand.GET_AIR_CONFIG_COMMAND, "scripts"));
+			script = script.replace(/\s*/g, "");
+			var args:Object;
+			var splits:Array = script.split("-");
+			script = splits.shift();
+			(splits.length > 0) && (args = splits);
 			if(config[script]) {
 				var subCommand:String;
 				if(config[script] is Array) {
 					var list:Array = config[script];
 					while(list.length > 0) {
 						subCommand = list.shift();
-						this.sendNotice(new SDANotice(subCommand, null));
+						this.sendNotice(new SDANotice(subCommand, args));
 					}
 				}else if(config[script] is String) {
-					this.sendNotice(new SDANotice(config[script], null));
+					this.sendNotice(new SDANotice(config[script], args));
 				}
 			}
 		}

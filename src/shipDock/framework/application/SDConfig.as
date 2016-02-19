@@ -8,6 +8,8 @@ package shipDock.framework.application
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import starling.events.EventDispatcher;
 	
 	/**
 	 * 框架总体配置
@@ -27,10 +29,10 @@ package shipDock.framework.application
 		public static const containerRawCls:Class = flash.display.DisplayObjectContainer;
 		
 		/**starling的事件类*/
-		public static const eventCls:Class = starling.events.Event;
+		public static const eventDispatcherCls:Class = starling.events.EventDispatcher;
 		
 		/**原生的事件类*/
-		public static const eventRawCls:Class = flash.events.Event;
+		public static const eventDispatcherRawCls:Class = flash.events.EventDispatcher;
 		
 		/**期望呈现的宽度*/
 		public static var stageWidth:Number = 640;

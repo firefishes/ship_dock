@@ -82,10 +82,7 @@ package action
 		 */
 		private function createApplication(result:* = null):void
 		{
-			if (this._isLoadSkin)
-			{
-				this._methodCenter.useCallback("create");
-			}
+			(this._isLoadSkin) && this._methodCenter.useCallback("create");
 			this._methodCenter.useCallback("reloadConfig", null, null, true);
 			this._isLoadSkin = false;
 		}
@@ -104,9 +101,7 @@ package action
 				this._methodCenter.addCallback("create", callback);
 			}
 			else
-			{
 				this._methodCenter.addCallback("reloadConfig", callback);
-			}
 			this._airConfigLoader = ObjectPoolManager.getInstance().fromPool(DataLoader, null);
 			this._airConfigLoader.setSDLoaderInfo("airConfig.json", this.airConfigLoadComplete);
 			this._airConfigLoader.loadError = this.airConfigLoadError;
@@ -153,9 +148,7 @@ package action
 				assetLoader.load();
 			}
 			else
-			{
 				this.createApplication();
-			}
 		}
 		
 		/**
@@ -193,29 +186,17 @@ package action
 			for each (type in airData)
 			{
 				if (type == ClipboardFormats.FILE_LIST_FORMAT)
-				{
 					typeKey = "File";//文件数据
-				}
 				else if (type == ClipboardFormats.BITMAP_FORMAT)
-				{
 					typeKey = "BMP";//图片数据
-				}
 				else if (type == ClipboardFormats.HTML_FORMAT)
-				{
 					typeKey = "HTML";//HTML数据
-				}
 				else if (type == ClipboardFormats.RICH_TEXT_FORMAT)
-				{
 					typeKey = "RTF";//富文本数据
-				}
 				else if (type == ClipboardFormats.TEXT_FORMAT)
-				{
 					typeKey = "Text";//字符串数据
-				}
 				else if (type == ClipboardFormats.URL_FORMAT)
-				{
 					typeKey = "URL";//URL链接数据
-				}
 				var airObjects:Array = event.clipboard.getData(type) as Array; //获取剪切板中的数据
 				this.callProxyed("nativeDragFor" + typeKey, new NativeDragParams(airObjects), false);
 			}

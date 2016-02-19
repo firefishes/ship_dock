@@ -55,9 +55,14 @@ package shipDock.framework.application.component
 			this._propertyChangeList = [];
 			this._propertiesChanged = { };
 			
-			(!(this._agented is SDConfig.eventCls) && !(this._agented is SDConfig.eventRawCls)) && 
-				(this._eventAgent = new SDConfig.eventRawCls());//如果被代理对象不能派发事件，则启用事件代理器，负责派发事件
-			
+			if (!(this._agented is SDConfig.displayCls) && !(this._agented is SDConfig.displayRawCls)) {
+				if (this._agented is SDConfig.eventDispatcherCls)
+					this._eventAgent = new SDConfig.eventDispatcherCls();
+				else if(this._agented is SDConfig.eventDispatcherRawCls)
+					this._eventAgent = new SDConfig.eventDispatcherRawCls();
+				else
+					this._eventAgent = new SDConfig.eventDispatcherRawCls();//如果被代理对象不能派发事件，则启用事件代理器，负责派发事件
+			}
 			if (this._eventAgent)//启用事件代理器则无callLater机制，否则根据被代理对象是否为显示对象子类情况开启
 				this._isApplyCallLater = false;
 			else
@@ -66,7 +71,7 @@ package shipDock.framework.application.component
 			this._callbacks = new MethodCenter();
 			
 			var subject:ISubject = SubjectManager.getSubject(UIAgentSubject.DEFAULT_NAME);
-			subject.registered(this);//注册UI代理观察者，用于统一接收变更
+			(subject) && subject.registered(this);//注册UI代理观察者，用于统一接收变更
 		}
 		
 		public function dispose():void {
@@ -203,8 +208,6 @@ package shipDock.framework.application.component
 		
 		public function invalidate():void 
 		{
-			if (!this._eventAgent)
-				return;
 			if(this._isApplyCallLater)
 				this._agented.addEventListener(Event.ENTER_FRAME, this.invalidateHandler);
 			else
