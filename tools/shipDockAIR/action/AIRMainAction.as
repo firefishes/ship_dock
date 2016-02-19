@@ -138,7 +138,7 @@ package action
 		{
 			this._airAppConfig = result;
 			this._id = this.getAIRAppConfig("air_app.id");
-			var restart:Function = this._methodCenter.getCallback("reloadConfig");
+			//var restart:Function = this._methodCenter.getCallback("reloadConfig");
 			var path:String = this.getAIRAppConfig("air_app.skin_swf");
 			if (path && this._isLoadSkin)
 			{
