@@ -1,6 +1,7 @@
 package command 
 {
 	import action.AIRMainAction;
+	import shipDock.framework.core.interfaces.INotice;
 	
 	import notices.SDANotice;
 	
@@ -16,6 +17,8 @@ package command
 		
 		public static const GET_AIR_CONFIG_COMMAND:String = "getAIRConfigCommand";
 		public static const RELOAD_CONFIG_COMMAND:String = "reloadConfigCommand";
+		public static const SHOW_TEXT_COMMAND:String = "showTextCommand";
+		public static const CLEAN_SDAIR_SCRIPT_COMMAND:String = "cleanSDAIRScriptCommand";
 		
 		public function AIRCommand() 
 		{
@@ -30,6 +33,14 @@ package command
 		public function reloadConfigCommand(notice:SDANotice):void {
 			//this.AIRAction.registered();
 			this.AIRAction.restart(false);
+		}
+		
+		public function showTextCommand(message:INotice):void {
+			this.AIRAction.callProxyed("showTextContent", message.data, false);
+		}
+		
+		public function cleanSDAIRScriptCommand(message:INotice):void {
+			this.AIRAction.callProxyed("cleanSDAIRScript", null, false);
 		}
 		
 		private function get AIRAction():AIRMainAction {

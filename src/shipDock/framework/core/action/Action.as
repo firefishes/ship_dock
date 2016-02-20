@@ -230,7 +230,7 @@ package shipDock.framework.core.action
 			if(!this._proxyed)
 				return null;
 			var result:* = (this._proxyed.hasOwnProperty(notice.invokeName)) ? 
-				this._proxyed[notice.invokeName](notice.data) : null;
+				this._proxyed[notice.invokeName](notice) : null;
 			return result;
 		}
 		

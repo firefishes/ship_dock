@@ -37,9 +37,8 @@ package ui
 		}
 		
 		protected function setEnabled():void {
-			if (this.agented.hasOwnProperty("mouseEnabled")) {
-				this.agented["mouseEnabled"] = this._enabled;
-			}
+			(this.agented.hasOwnProperty("mouseEnabled")) && (this.agented["mouseChildren"] = this._enabled);
+			(this.agented.hasOwnProperty("mouseChildren")) && (this.agented["mouseChildren"] = this._enabled);
 		}
 		
 		protected function setLabel():void {
@@ -65,6 +64,10 @@ package ui
 		
 		public function get enabled():Boolean {
 			return this._enabled;
+		}
+		
+		public function set visible(value:Boolean):void {
+			this.agented.visible = value;
 		}
 		
 	}

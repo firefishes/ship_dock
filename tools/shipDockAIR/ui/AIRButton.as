@@ -20,8 +20,18 @@ package ui
 			this.label = label;
 		}
 		
+		override protected function setEnabled():void 
+		{
+			super.setEnabled();
+			this.callbacks.useCallback("buttonEnabled");
+		}
+		
 		private function clickHandler(event:MouseEvent):void {
 			this.callbacks.useCallback("click", [event]);
+		}
+		
+		public function set buttonEnabled(value:Function):void {
+			this.callbacks.addCallback("buttonEnabled", value);
 		}
 	}
 

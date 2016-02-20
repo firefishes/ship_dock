@@ -58,10 +58,10 @@ package shipDock.framework.application.manager
 		 * 读取文件
 		 *
 		 * @param	file
-		 * @param	assetType
+		 * @param	assetType 默认为null，此方式表示读取二进制数据
 		 * @return
 		 */
-		public function readFile(file:*, assetType:String):*
+		public function readFile(file:*, assetType:String = null):*
 		{
 			var result:*;
 			if (file == null)
@@ -79,7 +79,7 @@ package shipDock.framework.application.manager
 					case AssetType.TYPE_TEXT: //读取文本格式
 						result = fileStream.readUTFBytes(fileStream.bytesAvailable);
 						break;
-					default:
+					default: //读取二进制数据
 						var bytes:ByteArray = new ByteArray();
 						fileStream.readBytes(bytes, 0, fileStream.bytesAvailable);
 						result = bytes;

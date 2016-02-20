@@ -14,6 +14,7 @@ package
 	import flash.utils.setInterval;
 	import shipDock.framework.application.component.UIAgent;
 	import shipDock.framework.application.manager.ViewManager;
+	import shipDock.framework.core.notice.InvokeProxyedNotice;
 	
 	import action.AIRMainAction;
 	
@@ -42,6 +43,7 @@ package
 		protected var _agent:UIAgent;
 		
 		private var _logsCount:int = 0;
+		private var _logsCountMax:int = 50;
 		
 		private var _UILayer:Sprite;
 		private var _popupLayer:Sprite;
@@ -126,13 +128,13 @@ package
 			return this.getSkinElement(name) as TextField;
 		}
 		
-		protected function setLog(text:String):void
+		public function setLog(text:String):void
 		{
 			(LogsManager.text == null) && (LogsManager.text = this._infoText);
 			LogsManager.getInstance().setLog(text);
 			
 			//设置显示输出信息的文本
-			if (this._logsCount > 50)
+			if (this._logsCount > this._logsCountMax)
 			{
 				this._logsCount = 0;
 				(this._infoText != null) && (this._infoText.text = "");
@@ -141,7 +143,7 @@ package
 			if (this._infoText != null)
 			{
 				this._infoText.appendText(text + "\r\n");
-				this._infoText.scrollV = this._infoText.bottomScrollV;
+				this._infoText.scrollV++;// = this._infoText.bottomScrollV;
 			}
 		}
 		
@@ -219,6 +221,15 @@ package
 		
 		protected function setLogText():void
 		{
+			
+		}
+		
+		public function showTextContent(message:InvokeProxyedNotice):void {
+			
+		}
+		
+		public function cleanSDAIRScript(message:InvokeProxyedNotice):void {
+			
 		}
 		
 		public function nativeDragForFile(result:NativeDragParams):void
@@ -254,6 +265,11 @@ package
 		protected function get airAction():AIRMainAction
 		{
 			return this._action;
+		}
+		
+		public function set logsCountMax(value:int):void 
+		{
+			_logsCountMax = value;
 		}
 	
 	}
